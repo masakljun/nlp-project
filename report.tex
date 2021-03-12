@@ -79,14 +79,40 @@ asdasdasd
 \section*{Introduction}
 In the last few years social media grew exponentially and with it also the ability of people to express themselves online. By enabling people to write on different online platforms without even identifying themselves it lead to a new era of freedom of speech. As this new medium for communication and writing brought many positive things, it also has its downside. Social media has become a place where heated discussions happen and often result in insults and hatred. It is an important task to recognize hate speech and to prevent it.
 
-Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation.}\cite{hate_speech}. However, we can see that the definiton is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification.
+Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation.}\cite{hate_speech}. However, we can see that the definiton is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification. 
+
+There has been done a lot of research regarding the hate speech, however these works are usually focused on the classification of hate speech. One of the first works include \cite{spertus1997smokey} who built the decision tree based classifier Smokey for abusive message recogniton and classification. Some other works that focus mainly on classification include \cite{waseem2016you} who compare the classification accuracy of models trained on expert and amateur annotations, \cite{gamback2017using} who use convolutional neural networks for classification into four predefined categories, and \cite{martins2018hate} who use different natural language processing techniques for expanding datasets with emotional information for better classification. In the last years, especially deep learning models are often used for detection and classification of hate speech, such as \cite{rizoiu2019transfer} who propose a sophisticated method that is a combination of a deep neural network architecture with transfer learning.
+There is a also a lot of related work that focuses on creating large datasets such as \cite{chung2019conan} who create a large-scale, multilingual, expert based dataset of hate speech. 
+
+What is less common in the research area of hate speech is analysis of relationships between different types of hate speech and the importance of specific keywords.
+
+\textcolor{red}{That is why we we use smth to do smth etc. torej neki o teh modelih ki jih boma uporabljala. Pa neki o tem kere classe npr mama oz keri obstajajo pa kere boma midva raziskovala}
+
+This paper is organized as follows:...
 %------------------------------------------------
 
-\section*{Methods}
+\section*{Data}
 
-Use the Methods section to describe what you did an how you did it -- in what way did you prepare the data, what algorithms did you use, how did you test various solutions ... Provide all the required details for a reproduction of your work.
+We use four publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}; regarding the third dataset (\cite{jha2017does}) we tranform labels \textit{hostile sexism} into \textit{sexism}, as tweets with such labels are already included in the first two datasets, and \textit{benevolent sexism} into \textit{benevolent}. We exclude \textit{None} label from all datasets as we do not need it for the analysis.
 
-Below are \LaTeX examples of some common elements that you will probably need when writing your report (e.g. figures, equations, lists, code examples ...).
+The fourth dataset (reffered to as Dataset AHS) that we use \cite{founta2018large} has 4 additional categories \textit{abusive,
+hateful, spam, and normal}, where we again exclude the latter category, as we are not interested in tweets that do not include hate speech. 
+
+We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively.
+
+\begin{figure}[ht]\centering
+	\includegraphics[width=\linewidth]{distribution_tweets_dataset1.png}
+	\caption{This figure shows the distribution of hate speech categories in the first dataset. We can see that sexism and benevolent are well represented, whereas racism and both are far less frequent.}
+	\label{fig:distribution_tweets_dataset1}
+\end{figure}
+
+\begin{figure}[ht]\centering
+	\includegraphics[width=\linewidth]{distribution_tweets_dataset2.png}
+	\caption{DODAJ OPIS}
+	\label{fig:distribution_tweets_dataset2}
+\end{figure}
+
+
 
 
 \subsection*{Equations}
