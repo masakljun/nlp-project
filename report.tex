@@ -20,10 +20,21 @@
 %----------------------------------------------------------------------------------------
 \documentclass[fleqn,moreauthors,10pt]{ds_report}
 \usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{tcolorbox}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}\openautoquote\hspace*{-.7ex}}
+  {\unskip\closeautoquote\vspace*{1mm}\signed{\usebox\mybox}\end{quote}}
 
 \graphicspath{{fig/}}
 
 
+\newtcbox{\labelbox}[1][red]{on line,
+arc=0pt,outer arc=0pt,colback=#1!10!white,colframe=#1!50!black,
+boxsep=0pt,left=1pt,right=1pt,top=1pt,bottom=0.8pt,
+boxrule=0pt,bottomrule=0.6pt,toprule=0.6pt,width=5cm}
 
 
 %----------------------------------------------------------------------------------------
@@ -93,149 +104,55 @@ This paper is organized as follows:...
 
 \section*{Data}
 
-We use four publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}; regarding the third dataset (\cite{jha2017does}) we tranform labels \textit{hostile sexism} into \textit{sexism}, as tweets with such labels are already included in the first two datasets, and \textit{benevolent sexism} into \textit{benevolent}. We exclude \textit{None} label from all datasets as we do not need it for the analysis.
+We use four publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
 
-The fourth dataset (reffered to as Dataset AHS) that we use \cite{founta2018large} has 4 additional categories \textit{abusive,
-hateful, spam, and normal}, where we again exclude the latter category, as we are not interested in tweets that do not include hate speech. 
+The fourth dataset (reffered to as Dataset AHS) that we use \cite{founta2018large} has $4$ categories - \textit{abusive,
+hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$, with mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
 
-We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively.
+We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze.
+
+We also provide an example for each label from both datasets. Some examples from the SRB dataset:
+
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Racism}} - "He can't be a server at our restaurant, that beard makes him look like a terrorist." Everyone laughs. \#fuckthanksgiving
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Sexism}} - \#katieandnikki stop calling yourselves pretty and hot..you're not and saying it a million times doesn't make you either...STFU
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Benevolent}} - It's "NEXT to every successful man, there's a woman"
+\end{tcolorbox}
+
+\noindent Examples from the AHS dataset:
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Spam}} - RT @OnlyLookAtMino: [!!] \#WINNER trending \#1 on melon search
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Abusive}} - You Worried About Somebody Bein Ugly... Bitch You Ugly...
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Hateful}} - i hope leaders just kick retards that fake leave teams today
+\end{tcolorbox}
+
 
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_dataset1.png}
-	\caption{This figure shows the distribution of hate speech categories in the first dataset. We can see that sexism and benevolent are well represented, whereas racism and both are far less frequent.}
+	\caption{\textbf{Distribution of tweets in SRB dataset.} This figure shows the distribution of hate speech categories in the SRB dataset. We can see that \textit{sexism} and \textit{benevolent} are well represented, whereas \textit{racism} and \textit{both} are far less frequent. Original set contains more tweets labeled \textit{racism}, but due to their removal we cannot obtain them.}
 	\label{fig:distribution_tweets_dataset1}
 \end{figure}
 
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_dataset2.png}
-	\caption{DODAJ OPIS}
+	\caption{\textbf{Distribution of tweets in AHS dataset.} We see that the \textit{spam} is the most represented label in the dataset, which represents the majority of the dataset. This is followed by the \textit{abusive} tweets and there is the least \textit{hateful} tweets. We can see that categories in this dataset are well represented.}
 	\label{fig:distribution_tweets_dataset2}
 \end{figure}
-
-
-
-
-\subsection*{Equations}
-
-You can write equations inline, e.g. $\cos\pi=-1$, $E = m \cdot c^2$ and $\alpha$, or you can include them as separate objects. The Bayes’s rule is stated mathematically as:
-
-\begin{equation}
-	P(A|B) = \frac{P(B|A)P(A)}{P(B)},
-	\label{eq:bayes}
-\end{equation}
-
-where $A$ and $B$ are some events. You can also reference it -- the equation \ref{eq:bayes} describes the Bayes's rule.
-
-\subsection*{Lists}
-
-We can insert numbered and bullet lists:
-
-% the [noitemsep] option makes the list more compact
-\begin{enumerate}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{enumerate}
-
-\begin{itemize}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{itemize}
-
-We can use the description environment to define or describe key terms and phrases.
-
-\begin{description}
-	\item[Word] What is a word?.
-	\item[Concept] What is a concept?
-	\item[Idea] What is an idea?
-\end{description}
-
-
-\subsection*{Random text}
-
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
-
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
-
-
-\subsection*{Figures}
-
-You can insert figures that span over the whole page, or over just a single column. The first one, \figurename~\ref{fig:column}, is an example of a figure that spans only across one of the two columns in the report.
-
-\begin{figure}[ht]\centering
-	\includegraphics[width=\linewidth]{single_column.pdf}
-	\caption{\textbf{A random visualization.} This is an example of a figure that spans only across one of the two columns.}
-	\label{fig:column}
-\end{figure}
-
-On the other hand, \figurename~\ref{fig:whole} is an example of a figure that spans across the whole page (across both columns) of the report.
-
-% \begin{figure*} makes the figure take up the entire width of the page
-\begin{figure*}[ht]\centering 
-	\includegraphics[width=\linewidth]{whole_page.pdf}
-	\caption{\textbf{Visualization of a Bayesian hierarchical model.} This is an example of a figure that spans the whole width of the report.}
-	\label{fig:whole}
-\end{figure*}
-
-
-\subsection*{Tables}
-
-Use the table environment to insert tables.
-
-\begin{table}[hbt]
-	\caption{Table of grades.}
-	\centering
-	\begin{tabular}{l l | r}
-		\toprule
-		\multicolumn{2}{c}{Name} \\
-		\cmidrule(r){1-2}
-		First name & Last Name & Grade \\
-		\midrule
-		John & Doe & $7.5$ \\
-		Jane & Doe & $10$ \\
-		Mike & Smith & $8$ \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:label}
-\end{table}
-
-
-\subsection*{Code examples}
-
-You can also insert short code examples. You can specify them manually, or insert a whole file with code. Please avoid inserting long code snippets, advisors will have access to your repositories and can take a look at your code there. If necessary, you can use this technique to insert code (or pseudo code) of short algorithms that are crucial for the understanding of the manuscript.
-
-\lstset{language=Python}
-\lstset{caption={Insert code directly from a file.}}
-\lstset{label={lst:code_file}}
-\lstinputlisting[language=Python]{code/example.py}
-
-\lstset{language=R}
-\lstset{caption={Write the code you want to insert.}}
-\lstset{label={lst:code_direct}}
-\begin{lstlisting}
-import(dplyr)
-import(ggplot)
-
-ggplot(diamonds,
-	   aes(x=carat, y=price, color=cut)) +
-  geom_point() +
-  geom_smooth()
-\end{lstlisting}
-
-%------------------------------------------------
-
-\section*{Results}
-
-Use the results section to present the final results of your work. Present the results in a objective and scientific fashion. Use visualisations to convey your results in a clear and efficient manner. When comparing results between various techniques use appropriate statistical methodology.
-
-\subsection*{More random text}
-
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
-
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
-
-Nulla rhoncus tortor eget ipsum commodo lacinia sit amet eu urna. Cras maximus leo mauris, ac congue eros sollicitudin ac. Integer vel erat varius, scelerisque orci eu, tristique purus. Proin id leo quis ante pharetra suscipit et non magna. Morbi in volutpat erat. Vivamus sit amet libero eu lacus pulvinar pharetra sed at felis. Vivamus non nibh a orci viverra rhoncus sit amet ullamcorper sem. Ut nec tempor dui. Aliquam convallis vitae nisi ac volutpat. Nam accumsan, erat eget faucibus commodo, ligula dui cursus nisi, at laoreet odio augue id eros. Curabitur quis tellus eget nunc ornare auctor.
 
 
 %------------------------------------------------
@@ -243,13 +160,6 @@ Nulla rhoncus tortor eget ipsum commodo lacinia sit amet eu urna. Cras maximus l
 \section*{Discussion}
 
 Use the Discussion section to objectively evaluate your work, do not just put praise on everything you did, be critical and exposes flaws and weaknesses of your solution. You can also explain what you would do differently if you would be able to start again and what upgrades could be done on the project in the future.
-
-
-%------------------------------------------------
-
-\section*{Acknowledgments}
-
-Here you can thank other persons (advisors, colleagues ...) that contributed to the successful completion of your project.
 
 
 %----------------------------------------------------------------------------------------
