@@ -22,6 +22,8 @@
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{tcolorbox}
+\usepackage{calc}
+
 
 \newsavebox\mybox
 \newenvironment{aquote}[1]
@@ -154,10 +156,24 @@ We also provide an example for each label from both datasets. Some examples from
 	\label{fig:distribution_tweets_dataset2}
 \end{figure}
 
+\section*{Data preprocessing}
+Before applying any methods we first preprocess all of our data. We separate a whole dataset AHS on three parts, one for each category (abusive, hateful, spam), each containing multiple documents - tweets belonging to this category. Similarly we separate a whole dataset SRB on three parts, one for each category (sexist, racist, benevolent). We remove retweet text RT, hyperlinks, hashtags, taggings, new lines, and zero length tweets. We further filter out tokens that not contain letters, e.g., raw punctuation.
+
 \section*{Methodology}
 \subsection*{TF-IDF}
-We first use a 
+We start off with a traditional method TF-IDF as we want to see the most relevant words for each category of offensive language. We show the results in Table \ref{tab:tf-idf}
 
+\begin{table}[]
+\begin{tabular}{ll}
+category   & unigrams with highest tf-idf score \\
+racism     & white, terror, coon                \\
+sexism     & hot, hard, feminazi                \\
+benevolent & nasty, sassy, classy               \\
+abusive    & hoe, fake, love                    \\
+hateful    & lgbt, religion, discrimination     \\
+spam       & game, laptop, giveaway            
+\end{tabular}
+\end{table}
 %------------------------------------------------
 
 \section*{Discussion}
