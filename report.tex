@@ -92,24 +92,29 @@ asdasdasd
 \section*{Introduction}
 In the last few years social media grew exponentially and with it also the ability of people to express themselves online. By enabling people to write on different online platforms without even identifying themselves it lead to a new era of freedom of speech. As this new medium for communication and writing brought many positive things, it also has its downside. Social media has become a place where heated discussions happen and often result in insults and hatred. It is an important task to recognize hate speech and to prevent it.
 
-Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation.}\cite{hate_speech}. However, we can see that the definiton is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification. 
+Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation}\cite{hate_speech}. We can see that the definiton is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification. In this paper we focus on ten subgroups of hate speech - \textit{abusive, hateful, spam, general hate speech, profane, offensive, cyberbullying, racism, sexism, } and \textit{benevolent sexism}. With understanding the structure of these groups, the goal is to also find similarities and connections between them.
 
 There has been done a lot of research regarding the hate speech, however these works are usually focused on the classification of hate speech. One of the first works include \cite{spertus1997smokey} who built the decision tree based classifier Smokey for abusive message recogniton and classification. Some other works that focus mainly on classification include \cite{waseem2016you} who compare the classification accuracy of models trained on expert and amateur annotations, \cite{gamback2017using} who use convolutional neural networks for classification into four predefined categories, and \cite{martins2018hate} who use different natural language processing techniques for expanding datasets with emotional information for better classification. In the last years, especially deep learning models are often used for detection and classification of hate speech, such as \cite{rizoiu2019transfer} who propose a sophisticated method that is a combination of a deep neural network architecture with transfer learning.
 There is a also a lot of related work that focuses on creating large datasets such as \cite{chung2019conan} who create a large-scale, multilingual, expert based dataset of hate speech. 
 
-What is less common in the research area of hate speech is analysis of relationships between different types of hate speech and the importance of specific keywords.
+What is less common in the research area of hate speech is analysis of relationships between different types of hate speech and the importance of specific keywords. Some examples include \cite{xu2012learning}, who try to separate bullying from other social media posts and try to discover topic of bullying using topic modeling with Latent Dirichlet Allocation (LDA). \cite{calderon2020topic} model hate speech against immigrants on Twitter in Spain. They try to find underlying topic of hate speech using LDA, discovering features of different dimensions of hatespeech, including foul language, humiliation, irony, etc. \cite{schmidt2017survey} conduct a survey about hate speech detection and describe key areas that have been explored, regarding the topic modeling, as well as sentiment analysis.
 
-\textcolor{red}{That is why we we use smth to do smth etc. torej neki o teh modelih ki jih boma uporabljala. Pa neki o tem kere classe npr mama oz keri obstajajo pa kere boma midva raziskovala}
+\textcolor{blue}{Our goal for the future is first a deeper analysis of the obtained data. We will try to extract some underlying topics for each label and present the main findings (LDA). Use TF-IDF to find the most common $n$-grams for each label. And in the future focus on the newer approaches, such as embedding with the further goal of exploring the relationships between types of hate speech. We hope that we can determine a more precise plan on the first submission defense.}
 
-This paper is organized as follows:...
+\textcolor{gray}{This paper is organized as follows: TODO at the end of the report}
 %------------------------------------------------
 
 \section*{Data}
 
-We use four publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
+We use six publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
 
 The fourth dataset (reffered to as Dataset AHS) that we use \cite{founta2018large} has $4$ categories - \textit{abusive,
 hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$, with mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
+
+Additionally we use the dataset of comments extracted from the League of Legends community \cite{bretschneider2016detecting}. We preprocess the dataset given in the SQL format to a more readable CSV form and keep only the posts that are annotated as harassment. We obtain $259$ examples of cyberbullying examples.
+
+The last dataset that we use was designed for the problem of the hate speech identification and classification, but we use the labels from the train and test set and merge them into one big dataset that we use for our analysis. It provides tags of \textit{hatespeech, profane, and slur}. It consists of \textcolor{red}{TODO} tweets, distribution of which can be seen in \textcolor{red}{TODO}.
+
 
 We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze.
 
@@ -141,6 +146,10 @@ We also provide an example for each label from both datasets. Some examples from
 
 \begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
 \labelbox{\textit{Hateful}} - i hope leaders just kick retards that fake leave teams today
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt]
+\labelbox{\textit{Cyberbullying}} - plot twist she's a fggt
 \end{tcolorbox}
 
 
