@@ -110,25 +110,19 @@ What is less common in the research area of hate speech is analysis of relations
 \section*{Data}
 
 We use six publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
-
 The fourth dataset (reffered to as Dataset AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
 hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$ tweets with the mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
+We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze. We also provide an example for each label.
 
-We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze.
-
-Additionally we use the dataset of comments extracted from the League of Legends community \cite{bretschneider2016detecting}. We preprocess the dataset given in the SQL format to a more readable CSV form and keep only the posts that are annotated as harassment. We obtain $259$ examples of cyberbullying examples.
-
-The last dataset that we use was designed for the problem of the hate speech identification and classification, but we use the labels from the train and test set and merge them into one big dataset that we use for our analysis. It provides tags of \textit{hatespeech, profane, and offensive}, so we refer to the dataset as HPO. It consists of 2549 tweets, distribution of which can be seen in Figure \ref{fig:distribution_tweets_hpo}. For each subgroup of hate speech, we provide an example from the datasets.
-
-\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\begin{tcolorbox}[colback=black!8,width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Racism}} - "He can't be a server at our restaurant, that beard makes him look like a terrorist." Everyone laughs. \#fuckthanksgiving
 \end{tcolorbox}
 
-\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\begin{tcolorbox}[colback=black!8, width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Sexism}} - \#katieandnikki stop calling yourselves pretty and hot..you're not and saying it a million times doesn't make you either...STFU
 \end{tcolorbox}
 
-\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\begin{tcolorbox}[colback=black!8, width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Benevolent}} - It's "NEXT to every successful man, there's a woman"
 \end{tcolorbox}
 
@@ -144,7 +138,21 @@ The last dataset that we use was designed for the problem of the hate speech ide
 \labelbox{\textit{Hateful}} - i hope leaders just kick retards that fake leave teams today
 \end{tcolorbox}
 
-\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\begin{figure}[ht]\centering
+	\includegraphics[width=\linewidth]{distribution_tweets_dataset1.png}
+	\caption{\textbf{Distribution of tweets in SRB dataset.} This figure shows the distribution of hate speech categories in the SRB dataset. We can see that \textit{sexism} and \textit{benevolent} are well represented, whereas \textit{racism} and \textit{both} are far less frequent. Original set contains more tweets labeled \textit{racism}, but due to their removal we cannot obtain them.}
+	\label{fig:distribution_tweets_dataset1}
+\end{figure}
+
+\begin{figure}[ht]\centering
+	\includegraphics[width=\linewidth]{distribution_tweets_dataset2.png}
+	\caption{\textbf{Distribution of tweets in AHS dataset.} We see that the \textit{spam} is the most represented label in the dataset, which represents the majority of the dataset. This is followed by the \textit{abusive} tweets and there is the least \textit{hateful} tweets. We can see that categories in this dataset are well represented.}
+	\label{fig:distribution_tweets_dataset2}
+\end{figure}
+
+\noindent Additionally we use the dataset of comments extracted from the League of Legends community \cite{bretschneider2016detecting}. We preprocess the dataset given in the SQL format to a more readable CSV form and keep only the posts that are annotated as harassment. We obtain $259$ examples of cyberbullying examples. The sixth dataset that we use was designed for the problem of the hate speech identification and classification, but we use the labels from the train and test set and merge them into one big dataset that we use for our analysis. It provides tags of \textit{hatespeech, profane}, and \textit{offensive}, so we refer to the dataset as HPO. It consists of 2549 tweets, distribution of which can be seen in Figure \ref{fig:distribution_tweets_hpo}. We again provide an example for each of the labels.
+
+\begin{tcolorbox}[colback=black!8, width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Cyberbullying}} - plot twist she's a fggt
 \end{tcolorbox}
 
@@ -160,23 +168,39 @@ The last dataset that we use was designed for the problem of the hate speech ide
 \labelbox{\textit{Profane}} - Fuck Trump and anybody who voted for that Lyin POS!  \#FuckTrump
 \end{tcolorbox}
 
-
-\begin{figure}[ht]\centering
-	\includegraphics[width=\linewidth]{distribution_tweets_dataset1.png}
-	\caption{\textbf{Distribution of tweets in SRB dataset.} This figure shows the distribution of hate speech categories in the SRB dataset. We can see that \textit{sexism} and \textit{benevolent} are well represented, whereas \textit{racism} and \textit{both} are far less frequent. Original set contains more tweets labeled \textit{racism}, but due to their removal we cannot obtain them.}
-	\label{fig:distribution_tweets_dataset1}
-\end{figure}
-
-\begin{figure}[ht]\centering
-	\includegraphics[width=\linewidth]{distribution_tweets_dataset2.png}
-	\caption{\textbf{Distribution of tweets in AHS dataset.} We see that the \textit{spam} is the most represented label in the dataset, which represents the majority of the dataset. This is followed by the \textit{abusive} tweets and there is the least \textit{hateful} tweets. We can see that categories in this dataset are well represented.}
-	\label{fig:distribution_tweets_dataset2}
-\end{figure}
-
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_hpo.png}
 	\caption{\textbf{Distribution of tweets in HPO dataset.} The most used label is \textit{hatespeech}. It is followed by \textit{profane} and then \textit{offensive}, which have a similar number of tweets.}
 	\label{fig:distribution_tweets_hpo}
+\end{figure}
+
+\noindent We also use the dataset of Wikipedia comments \cite{dixon2017ex}, that are marked as either \textit{toxic}, \textit{sever toxic}, \textit{obscene}, \textit{identity hate}, \textit{threat}, and \textit{insult}. We merge the first two categories into \textit{toxic}. It is important to note that each comment in this dataset might have multiple labels, so the results for those tags might be similar. Original dataset contains $159571$ tweets, $16225$ of which are labeled. We show the distribution of the labels in Figure \ref{fig:distribution_wiki_dataset}. We denote this dataset as TOITI in the future text.
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\labelbox{\textit{Threat}} - SHUT UP, YOU FAT POOP, OR I WILL KICK YOUR ASS!!!
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\labelbox{\textit{Obscene}} - you are a stupid fuck and your mother's cunt stinks
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\labelbox{\textit{Insult}} - Fuck you, block me, you faggot pussy!
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\labelbox{\textit{Toxic}} - What a motherfucking piece of crap those fuckheads for blocking us!
+\end{tcolorbox}
+
+\begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
+\labelbox{\textit{Identity}} - A pair of jew-hating weiner nazi schmucks.
+\end{tcolorbox}
+
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{distribution_wiki_dataset.png}
+	\caption{\textbf{Distribution of tweets in TOITI}. We see that most of the comments are labeled as \textit{toxic}. Around half of them are \textit{obscene} and around half are also labeled as \textit{insult}. \textit{Identity hate} and \textit{threat} are far more uncommon in this dataset.}
+	\label{fig:distribution_wiki_dataset}
 \end{figure}
 
 \section*{Data preprocessing}
