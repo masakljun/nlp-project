@@ -244,7 +244,18 @@ toxic       & fuck, get, bitch, want, block             \\ \bottomrule
 \caption{Table shows 5 highest scoring unigrams for each label we investigate. We choose the parameters, which we believe provide us the most meaningful unigrams, so we consider words that appear in at least $5\%$ and less than $60\%$ of the documents.}
 \label{tab:tf-idf}
 \end{table}
-%------------------------------------------------
+% --------------------------------------------------------------
+\subsection*{Non-contextual word embeddings}
+First we select top 3 unigrams from TF-IDF results in the previous subsection (if available in the model) and find 20 most similar embeddings of pre-fitted Word2Vec and GloVe (FastText unfortunatelly does not run due to available computational resources). We visualize the results with the help of t-SNE. We show the results in \ref{fig:embedding_words}. From both plots we can see that words (and its neighbors) like bitch, ass, nigga, shit, fuck, idiot, stupid, and docuhebag are relatively closely together. This could indicate a relation between \textit{abusive, hateful, insult, obscene, identity hate}, and \textit{toxic}. We can also see that classy, nasty, sassy, feminazi, and sexist are closely related - sometimes some words are more related in Word2Vec than in Glove and vice versa. From this we can see a relation between \textit{sexism} and \textit{benevolent sexism}, which is expected as they are correlated. Relationships between certain words can also vastly differ in Word2Vec and Glove. For example giveaway and game are relatively close in Word2Vec, but are further apart in Glove. Similarly, terror and white (both common unigrams of \textit{racism} label) are far away in Word2Vec, but close in Glove. However, terror stands out from other words in both embeddings, which might indicate that racism is at least in some way different to other labels. Similarly, words from \textit{spam} are usually more separated from words of other labels, also indicating another more clearly distinguishable group. Trump is relatively close to a lot of words in Word2Vec - women, world, peopl, sexist, die, little, guy. This could imply that general \textit{hatespeech} and \textit{hateful} are connected to \textit{sexism, identity hate, threat} and also \textit{cyberbullying}. 
+
+\begin{figure*}[ht]\centering
+	\includegraphics[width=0.495\linewidth]{SimilarWords - word2vec - t-SNE.png}
+	\includegraphics[width=0.495\linewidth]{SimilarWords - Glove - t-SNE.png}
+	\caption{\textbf{Word2Vec and Glove similar words.} Left figure shows Word2Vec embeddings of neigbouring words of top unigrams from Table \ref{tab:tf-idf} and the right figure shows Glove embeddings.}
+	\label{fig:embedding_words}
+\end{figure*}
+
+Additionally, after finding some initial relations with previous approaches, we also find most similar words to the category labels and compare them in a similar fashion.
 
 \section*{Discussion}
 
