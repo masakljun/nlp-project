@@ -105,7 +105,8 @@ What is less common in the research area of hate speech is analysis of relations
 \textcolor{blue}{Note to professor: Our goal for the future is first a deeper analysis of the obtained data. We will try to extract some underlying topics for each label and present the main findings (LDA). Use TF-IDF to find the most common $n$-grams for each label. And in the future focus on the newer approaches, such as embedding with the further goal of exploring the relationships between types of hate speech. We hope that we can determine a more precise plan on the first submission defense.}
 
 \textcolor{gray}{This paper is organized as follows: TODO at the end of the report}
-%------------------------------------------------
+
+% --------------------------------------------------------------------------------------------------------------------------------
 
 \section*{Data}
 
@@ -206,14 +207,24 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 \section*{Data preprocessing}
 Before applying any methods we first preprocess all of our data. We separate datasets into subgroups only, where each contains multiple documents - tweets belonging to this category. We remove retweet text RT, hyperlinks, hashtags, taggings, new lines, and zero length tweets. We further filter out tokens that not contain letters, e.g., raw punctuation.
 
+% --------------------------------------------------------------------------------------------------------------------------------
 \section*{Methodology}
+We start the analysis with more traditional approaches, and continue with neural approaches.
+
+% --------------------------------------------------------------
+\subsection*{LDA}
+We use Latent Dirchilet Allocation (LDA) in combination with Bag-of-Words (BoW) and TF-IDF in hopes of finding obvious topics from all the provided comments / tweets. We try to determine 15 different topics, which is the same as the number of labels we have in our datasets. Results using BoW and TF-IDF are similar, however, we cannot clearly distinguish between the topics and connect obtained topics to the existing labels, aside from one topic, which is related to sexism. Top 5 most related words are: \textit{penis, rape, image, live, vagina}.
+
+% --------------------------------------------------------------
 \subsection*{TF-IDF}
-We start off with a traditional method TF-IDF as we want to see the most relevant words for each category of offensive language. We show the results in Table \ref{tab:tf-idf}
+We continue with the analysis of datasets with a traditional method TF-IDF as we want to see the most relevant words for each category of offensive language that we have in the dataset. We show the results in Table \ref{tab:tf-idf}. We can see that some of the categories have similar unigrams that achieved the highest TF-IDF score. An example of categories with the same highest scored unigrams are \textit{insult} and \textit{obscene}. This makes it harder to differentiate between the categories. It is important to note, that such examples might also occur due to subjective labeling in the provided datasets, as well as people not clearly differentiating between these categories. Most datasets are not labeled by experts, but with the help of platforms such as FigureEight or Amazon Mechanical Turk. From the results in Table \ref{tab:tf-idf}, we could assume that most people perceive categories such as \textit{insult} and \textit{obscene} or \textit{threat} and \textit{toxic} similarly. On the other hand, categories such as \textit{spam} or \textit{cyberbullying} are clearly differentiable from other categories. We can also see a lot of categories including Trump related words (\textit{hatespeech, profane}, and \textit{offensive}). Those categories are taken from the same dataset, and we can see that such labels will contain words that are related. So the words connected to those labels might also be connected to some bigger topic, which depends on the annotator's choice from where to extract the tweets / comments.
+
 \begin{table}[htb]
+\scriptsize
 \centering
 \begin{tabular}{l|l}
 \toprule
-\textbf{category}   & \textbf{unigrams with highest tf-idf score} \\ \midrule
+\textbf{category}   & \textbf{unigrams with highest TF-IDF score} \\ \midrule
 racism     & peopl, white, whi, terror, mkr                \\ \hline
 sexism     & feminazi, women, think, sexist, notsexist                \\ \hline
 benevolent & women, classi, sassi, nasti, gonna            \\ \hline
@@ -231,7 +242,7 @@ profane       & trump, shit, say, resist, peopl             \\ \hline
 threat       & fuck, get, die, want, find           \\ \hline
 toxic       & fuck, get, bitch, want, block             \\ \bottomrule
 \end{tabular}
-\caption{bb}
+\caption{Table shows 5 highest scoring unigrams for each label we investigate. We choose the parameters, which we believe provide us the most meaningful unigrams, so we consider words that appear in at least $5\%$ and less than $60\%$ of the documents.}
 \label{tab:tf-idf}
 \end{table}
 %------------------------------------------------
