@@ -2,3 +2,6 @@
 code/data/filtered/racism_sexism_benevolent/
 code/cc.en.300.bin
 code/cc.en.300.bin.gz
+code/fastText
+*.gz
+code/embeddings
