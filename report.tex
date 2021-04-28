@@ -72,7 +72,7 @@ boxrule=0pt,bottomrule=0.6pt,toprule=0.6pt,width=5cm}
 %----------------------------------------------------------------------------------------
 
 \Abstract{
-In this paper we focus on the exploratory analysis of 10 different subgroups of hate speech. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums. First we use classic approaches, such as TF-IDF, BoW, and LDA, then we move on to more sophisticated methods such as embeddings. \textcolor{blue}{Note to professor: More to come in the next submission.}
+In this paper we focus on the exploratory analysis of 10 different subgroups of hate speech. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums. First we use classic approaches, such as TF-IDF, BoW, and LDA, then we move on to more sophisticated methods such as embeddings. We use both non-contextual embeddings, such as Word2Vec and GloVe, and contextual embeddings, such as BERT and ELMo. We find out that 
 }
 
 %----------------------------------------------------------------------------------------
@@ -102,13 +102,12 @@ There is a also a lot of related work that focuses on creating large datasets su
 
 What is less common in the research area of hate speech is analysis of relationships between different types of hate speech and the importance of specific keywords. Some examples include \cite{xu2012learning}, who try to separate bullying from other social media posts and try to discover topic of bullying using topic modeling with Latent Dirichlet Allocation (LDA). \cite{calderon2020topic} model hate speech against immigrants on Twitter in Spain. They try to find underlying topic of hate speech using LDA, discovering features of different dimensions of hatespeech, including foul language, humiliation, irony, etc. \cite{schmidt2017survey} conduct a survey about hate speech detection and describe key areas that have been explored, regarding the topic modeling, as well as sentiment analysis.
 
-\textcolor{blue}{Note to professor: Our goal for the future is first a deeper analysis of the obtained data. We will try to extract some underlying topics for each label and present the main findings (LDA). Use TF-IDF to find the most common $n$-grams for each label. And in the future focus on the newer approaches, such as embedding with the further goal of exploring the relationships between types of hate speech. We hope that we can determine a more precise plan on the first submission defense.}
-
-\textcolor{gray}{This paper is organized as follows: TODO at the end of the report}
+This paper is organized as follows: we present the datasets of tweets and comments in Section \ref{sec:data}, we present our data preprocessing routine in Section \ref{sec:preprocess}, we perform the exploratory analysis by using many traditional and neural approaches in Section \ref{sec:metho}, and we show the final results and a scheme of hate speech in \textcolor{red}{todo}
 
 % --------------------------------------------------------------------------------------------------------------------------------
 
-\section*{Data}
+\section{Data}
+\label{sec:data}
 
 We use six publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (reffered to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
 The fourth dataset (reffered to as Dataset AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
@@ -204,11 +203,13 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 	\label{fig:distribution_wiki_dataset}
 \end{figure}
 
-\section*{Data preprocessing}
+\section{Data preprocessing}
+\label{sec:preprocess}
 Before applying any methods we first preprocess all of our data. We separate datasets into subgroups only, where each contains multiple documents - tweets belonging to this category. We remove retweet text RT, hyperlinks, hashtags, taggings, new lines, and zero length tweets. We further filter out tokens that not contain letters, e.g., raw punctuation.
 
 % --------------------------------------------------------------------------------------------------------------------------------
 \section*{Methodology}
+\label{sec:metho}
 We start the analysis with more traditional approaches, and continue with neural approaches.
 
 % --------------------------------------------------------------
@@ -261,7 +262,7 @@ Additionally, after finding some initial relations with previous approaches, we 
 \begin{figure*}[htb]\centering
 	\includegraphics[width=0.495\linewidth]{SimilarWords - word2vec - t-SNE_1.png}
 	\includegraphics[width=0.495\linewidth]{SimilarWords - Glove - t-SNE_1.png}
-	\caption{\textbf{Word2Vec and Glove similar labels.} Left figure shows Word2Vec embeddings of neighboring words of labels we analyze and the right figure shows Glove embeddings. Note that we ommit labels that are not in vocabulary.}
+	\caption{\textbf{Word2Vec and Glove similar labels.} Left figure shows Word2Vec embeddings of neighboring words of labels we analyze and the right figure shows Glove embeddings. Note that we omit labels that are not in vocabulary.}
 	\label{fig:embedding_labels}
 \end{figure*}
 
@@ -285,6 +286,38 @@ However, for some categories we can clearly see that they are slightly less simi
 	\caption{\textbf{Average cosine similarities between of embeddings between each label.} }
 	\label{fig:bertsim1}
 \end{figure*}
+
+For each label we try to find the keywords that describe subgroups of hate speech the most. We do this by first embedding the tweets/comments using BERT and separately embedding the sub-phrases from documents. For each document we then try to find the most similar sub-phrases with the help of embeddings and cosine similarity. For each label we provide three of the most common keywords obtained from the documents. We show the keywords in Table \ref{tab:bertkey}.
+
+\begin{table}[]
+\scriptsize
+\centering
+\begin{tabular}{l|l}
+\toprule
+\textbf{category} & \textbf{BERT keywords}                                                                                                                                \\ 
+\midrule
+racism            & \begin{tabular}[c]{@{}l@{}}racistreading, terroristreligion, terroristnationpakistan, \\ faithlessfaggotboy, racisttrying\end{tabular}                \\ \hline
+sexism            & \begin{tabular}[c]{@{}l@{}}godlesswomen, sexlifeless, bitchmattythewhite,\\  onlyallwomen, bitchesvagina\end{tabular}                                 \\ \hline
+benevolent        & \begin{tabular}[c]{@{}l@{}}sexyolderwomen, girlsbeautiful, bitchmattythewhite,\\  womenattractmenattracted, happywomenday\end{tabular}                \\ \hline
+abusive*          & \begin{tabular}[c]{@{}l@{}}misogynistic, hatemyowngender, hatefultrump,\\  selfishmotherfuckers, faithlessfaggotboy\end{tabular}                      \\ \hline
+hateful*          & \begin{tabular}[c]{@{}l@{}}misogynistic, hatemyowngender, selfishmotherfuckers, \\ terroristhasreligion, faithlessfaggotboy\end{tabular}              \\ \hline
+spam              & \begin{tabular}[c]{@{}l@{}}100million, enjoyed, enjoying, \\ fridaymotiovation, saturdaynightonline\end{tabular}                                      \\ \hline
+cyberbullying*    & \begin{tabular}[c]{@{}l@{}}whoremonger, selfishmotherfuckers, faithlessfaggotboy, \\ bitchmattythewhite, boycottfoxnews\end{tabular}                  \\ \hline
+hatespeech*       & \begin{tabular}[c]{@{}l@{}}doctors\_against\_assualt, trumpobstructedjustice, \\ trumpfascism, terroristnationpakistan, doctorsfightback\end{tabular} \\ \hline
+identity hate     & \begin{tabular}[c]{@{}l@{}}whoremonger, gaywad, nazisnotwelcome, \\ racisttrying, racistreading\end{tabular}                                          \\ \hline
+insult*           & \begin{tabular}[c]{@{}l@{}}whoremonger, selfishmotherfuckers, boycottfoxnews, \\ killyourself, cocksuckerfuck\end{tabular}                            \\ \hline
+obscene*          & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, whoremonger, killyourself, \\ selfishmotherfuckers, cocksuckerfuck\end{tabular}                            \\ \hline
+offensive*        & \begin{tabular}[c]{@{}l@{}}trumpobstructedjustice, trumpfascism, \\ selfishmotherfuckers, murdermystery, terroristhasreligion\end{tabular}            \\ \hline
+profane*          & \begin{tabular}[c]{@{}l@{}}trumpfascism, trumpobstructedjustice, faithlessfaggotboy, \\ selfishmotherfuckers, doctors\_against\_assualt\end{tabular}  \\ \hline
+threat            & \begin{tabular}[c]{@{}l@{}}killyourself, murdering, whoremonger, \\ hatemongers, murdermystery\end{tabular}                                           \\ \hline
+toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuckers, killyourself, \\ whoremonger, nazisnotwelcome\end{tabular}   
+
+\\
+\bottomrule                       
+\end{tabular}
+\caption{\textbf{BERT keywords.} Table shows 5 most important keywords for each hate speech subgroup found with BERT. Note: categories that have an $\*$ contain also 2 keywords (dumbdonnythedraftdodgingdotart and worstsecretaryofstateinushistory) but we omit them in order to obtain clearer represenatation of categories.}
+\label{tab:bertkey}
+\end{table}
 
 \section*{Discussion}
 
