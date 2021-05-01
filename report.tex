@@ -256,15 +256,16 @@ First we select top 3 unigrams from TF-IDF results in the previous subsection (i
 	\label{fig:embedding_words}
 \end{figure*}
 
-Additionally, after finding some initial relations with previous approaches, we also find most similar words to the category labels and compare them in a similar fashion. We show the results in Figure~\ref{fig:embedding_labels}. We can see that \textit{homophobic} and \textit{racist} appear closely together in both embeddings  and are closely related to \textit{hateful} and \textit{slur}. Another group which is close to the mentioned labels consist of \textit{profane}, \textit{vulgar}, \textit{obscene}, \textit{insult} and \textit{abusive}. We can also see that \textit{threat} and \textit{offensive} are close together. In both embeddings \textit{spam}, \textit{toxic}, and \textit{discredit} are separated from other groups and more clearly distinguishable. \textit{Threat}, \textit{offensive}, and \textit{hostile} also appear closely together. From the GloVe embeddings we can also see a connection between \textit{cyberbullying} and \textit{harrasment}.
+Additionally, after finding some initial relations with previous approaches, we also find most similar words to the category labels and compare them in a similar fashion. We show the results in Figure~\ref{fig:embedding_labels} using t-SNE. Because of this we cannot interpret distances between the lables from the visualization. However, we can still infer that labels that are entangled are more similar than those that are nicely separable from one another. We can see that \textit{homophobic} and \textit{racist} appear closely entangled in Word2Vec and GloVe embeddings, meaning that they cannot be separated. On the other hand, in both of these embeddings \textit{spam}, \textit{toxic}, and \textit{discredit} are well separated from other groups and are clearly distinguishable from others. We can also see that \textit{abusive} is entangled with \textit{benevolent} in GloVe representation, however, in results obtained from Word2Vec  \textit{benevolent} is nicely separable from other labels, so it is difficult to conclude that \textit{benevolent} is label that is different enough from other labels. FastText also nicely separates \textit{toxic} and \textit{benevolent} from other labels, but is unable to separate \textit{vulgar}, \textit{profane} and \textit{obscene}, and \textit{insult} as they appear entangled together. From all three embeddings combined we can conclude that the only label that can be always well distinguished from the others is \textit{toxic}, and that \textit{vulgar}, \textit{profane}, \textit{obscene}, and \textit{insult} are two labels that cannot be nicely separated.
 
 
-\begin{figure*}[htb]\centering
-	\includegraphics[width=0.495\linewidth]{SimilarWords - word2vec - t-SNE_1.png}
-	\includegraphics[width=0.495\linewidth]{SimilarWords - Glove - t-SNE_1.png}
-	\caption{\textbf{Word2Vec and Glove similar labels.} Left figure shows Word2Vec embeddings of neighboring words of labels we analyze and the right figure shows Glove embeddings. Note that we omit labels that are not in vocabulary.}
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{SimilarWords - word2vec - t-SNE_1.png}
+	\includegraphics[width=\linewidth]{SimilarWords - Glove - t-SNE_1.png}
+	\includegraphics[width=\linewidth]{SimilarWords - FastText - t-SNE_1.png}
+	\caption{\textbf{Word2Vec, Glove, and FastText similar labels.} Figure shows Word2Vec (1st row), Glove (2nd row), and FastText (3rd row) embeddings of neighboring words of labels we analyze. Note that we omit labels that are not in vocabulary.}
 	\label{fig:embedding_labels}
-\end{figure*}
+\end{figure}
 
 By now we provide some relations and decide to further investigate the connections between the related labels using word analogy. We try to find hyponyms and hypernyms, which we try with the help of the following setting:
 \begin{verbatim}
@@ -276,6 +277,22 @@ cat : animal = our_label : x 	(hypernyms)
 where \texttt{our\_label} is one of the analyzed labels and \texttt{x} is the word found by Word2Vec or Glove. 
 
 Unfortunately the relationships are not clear and uniquely defined. An example is \textit{racism} is to \textit{sexism} what is \texttt{son} to \texttt{father} with $\approx 64.6\%$ probability, but \textit{sexism} is to \textit{racism} what is \texttt{son} to \texttt{father} with $\approx 64.8\%$ probability. We can once again see that the two labels are related, but the precise relationship cannot be inferred. Usign \texttt{brother} and \texttt{sister} the probability is lower. This could indicate that it is impossible to find a specific hypernym and that we can only conclude that the labels are more closely related than to any other label, but they are both in some way hypernym and hyponym of each other. Similarly, \textit{racism} and \textit{sexism} are connected to \textit{homophobia} and \textit{slur}. Another group that we find, but also cannot clearly define the inner relations containt \textit{vulgar}, \textit{profane}, and \textit{obscene}.
+
+As mentioned, the distances between the inspected labels cannot be determined from our chosen visualization. That is why we approach this problem with clustering. We use $k$-means and hierarchical clustering in hopes of finding meaningful clusters that could help us better understand the relationships between the subgroups of the hate speech. We determine the $k$ in $k$-means using silhouette score. TODO: DEJ EN PLOT SILHOUETTE SCORA. Note that we use the $k$ of the second peak of the score, as we try to better divide the labels into subcategories. From the top 30 similar words for each label, we compute an average vector and we obtain one such vector for each label. We compute the cosine similarity matrix between the vectors $simcos$ and compute the distance matrix as $d = 1 - simcos$, which we then use for the clustering. In Table \ref{tab:clustering_labels_word2vec} we show the obtained clusters and in Figure TODO we show the results of hierarchical clustering of Word2Vec embeddings.
+
+\begin{table}[]
+\begin{tabular}{l|l}
+\toprule
+\textbf{cluster} & \textbf{components}                                                                                                                                        \\ \midrule
+1                & offensive                                                                                                                                                  \\ \hline
+2                & \begin{tabular}[c]{@{}l@{}}abusive, vulgar, racist, homophobic, profane, \\ slur, harrasment, obscene, hateful, insult,\\ sexism, hate speech\end{tabular} \\ \hline
+3                & discredit, hostile, benevolent                                                                                                                             \\ \hline
+4                & cyberbullying, spam                                                                                                                                        \\ \hline
+5                & threat, toxic                                                                                                                                              \\ \bottomrule
+\end{tabular}
+\caption{\textbf{K-means clustering of average Word2Vec embeddings of labels' 30 nearest words.} Table shows five clusters obtained with 5-means clustering. We determine $k = 5$ using silhouette score.}
+	\label{tab:clustering_labels_word2vec}
+\end{table}
 
 \subsection*{Contextual word embeddings}
 We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base model for Sentence Embeddings \cite{reimers-2019-sentence-bert} and convert tweets and comments from our dataset to BERT embeddings. We use cosine similarity to compute the similarity between the embeddings. Next, we compute the average similarity between the tweets of each label to the tweets of all other labels. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see that even the tweets/comments annotated with the same label are only between $0.35$ and $0.65$ similar between one another according to BERT. This might indicate one of the two things - either the tweets/comments are inconsistently labeled by annotators, or BERT, eventhough being one of the most powerful embeddings, does not find well the contextual similarity that is specific for each subgroup of hate speech. Looking at the non-diagonal elements of the matrix, we can also see that the average similarity according to BERT between the subgroups of hate speech is around $0.5$. The reason might be that the tweets/comments subgroups are very similar to the tweets/comments of the other subgroups. This might be due to the subgroups of hate speech actually being relatively similar, or again because of the annotating process.
