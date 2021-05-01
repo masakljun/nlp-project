@@ -72,7 +72,7 @@ boxrule=0pt,bottomrule=0.6pt,toprule=0.6pt,width=5cm}
 %----------------------------------------------------------------------------------------
 
 \Abstract{
-In this paper we focus on the exploratory analysis of 10 different subgroups of hate speech. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums. First we use classic approaches, such as TF-IDF, BoW, and LDA, then we move on to more sophisticated methods such as embeddings. We use both non-contextual embeddings, such as Word2Vec and GloVe, and contextual embeddings, such as BERT and ELMo. We find out that 
+In this paper we focus on the exploratory analysis of 10 different subgroups of hate speech. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums. First we use classic approaches, such as TF-IDF, BoW, and LDA, then we move on to more sophisticated methods such as embeddings. We use both non-contextual embeddings, such as Word2Vec and GloVe, and contextual embeddings, such as BERT. We find out that \textcolor{blue}{TODO: Describe the findings for the last submission}.
 }
 
 %----------------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ toxic       & fuck, get, bitch, want, block             \\ \bottomrule
 \end{table}
 % --------------------------------------------------------------
 \subsection*{Non-contextual word embeddings}
-We first find most similar words to the category label names and use the obtained results to find similarities between labels. For this task we use pre-fitted Word2Vec (\cite{mikolov2013efficient}, \cite{mikolov2013distributed}), GloVe \cite{pennington2014glove}, and FastText (\cite{bojanowski2016enriching}). We visualize the results with the help of t-SNE. Because of this we cannot interpret distances between the labels from the visualization. However, we can still infer that the labels that are entangled are more similar than those that are nicely separable from one another. %We show the results in \ref{fig:embedding_words}. From both plots we can see that words (and its neighbors) like bitch, ass, nigga, shit, fuck, idiot, stupid, and docuhebag are relatively closely together. This could indicate a relation between \textit{abusive, hateful, insult, obscene, identity hate}, and \textit{toxic}. We can also see that classy, nasty, sassy, feminazi, and sexist are closely related - sometimes some words are more related in Word2Vec than in Glove and vice versa. From this we can see a relation between \textit{sexism} and \textit{benevolent sexism}, which is expected as they are correlated. Relationships between certain words can also vastly differ in Word2Vec and Glove. For example giveaway and game are relatively close in Word2Vec, but are further apart in Glove. Similarly, terror and white (both common unigrams of \textit{racism} label) are far away in Word2Vec, but close in Glove. However, terror stands out from other words in both embeddings, which might indicate that racism is at least in some way different to other labels. Similarly, words from \textit{spam} are usually more separated from words of other labels, also indicating another more clearly distinguishable group. Trump is relatively close to a lot of words in Word2Vec - women, world, peopl, sexist, die, little, guy. This could imply that general \textit{hatespeech} and \textit{hateful} are connected to \textit{sexism, identity hate, threat} and also \textit{cyberbullying}. 
+We first find most similar words to the category label names and use the obtained results to find similarities between labels. For this task we use pre-fitted Word2Vec (\cite{mikolov2013efficient}, \cite{mikolov2013distributed}), GloVe \cite{pennington2014glove}, and FastText (\cite{bojanowski2016enriching}). We visualize the results with the help of t-SNE. Because of this we cannot interpret distances between the labels from the visualization. However, we can still infer that the labels that are intertwined are more similar than those that are nicely separable from one another. %We show the results in \ref{fig:embedding_words}. From both plots we can see that words (and its neighbors) like bitch, ass, nigga, shit, fuck, idiot, stupid, and docuhebag are relatively closely together. This could indicate a relation between \textit{abusive, hateful, insult, obscene, identity hate}, and \textit{toxic}. We can also see that classy, nasty, sassy, feminazi, and sexist are closely related - sometimes some words are more related in Word2Vec than in Glove and vice versa. From this we can see a relation between \textit{sexism} and \textit{benevolent sexism}, which is expected as they are correlated. Relationships between certain words can also vastly differ in Word2Vec and Glove. For example giveaway and game are relatively close in Word2Vec, but are further apart in Glove. Similarly, terror and white (both common unigrams of \textit{racism} label) are far away in Word2Vec, but close in Glove. However, terror stands out from other words in both embeddings, which might indicate that racism is at least in some way different to other labels. Similarly, words from \textit{spam} are usually more separated from words of other labels, also indicating another more clearly distinguishable group. Trump is relatively close to a lot of words in Word2Vec - women, world, peopl, sexist, die, little, guy. This could imply that general \textit{hatespeech} and \textit{hateful} are connected to \textit{sexism, identity hate, threat} and also \textit{cyberbullying}. 
 
 %\begin{figure*}[htb]\centering
 %	\includegraphics[width=0.495\linewidth]{SimilarWords - word2vec - t-SNE.png}
@@ -322,7 +322,7 @@ We move on to contextual embeddings and we focus on BERT. We use the pretrained 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\linewidth]{bert_sim1.png}
-	\caption{\textbf{Average cosine similarities between of embeddings between each label.} }
+	\caption{\textbf{Cosine similarities between average representations of label embeddings.} }
 	\label{fig:bertsim1}
 \end{figure}
 
@@ -358,8 +358,8 @@ toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuck
 \label{tab:bertkey}
 \end{table}
 
-\subsection{Universal Sentence Encoder}
-\textcolor{blue}{In the last submission we will also include the findings and results of USE that are already present in our repository.}
+%\subsection{Universal Sentence Encoder}
+%\textcolor{blue}{In the last submission we will also include the findings and results of USE that are already present in our repository.}
 
 \section*{Discussion}
 
