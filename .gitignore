@@ -5,3 +5,4 @@ code/cc.en.300.bin.gz
 code/fastText
 *.gz
 code/embeddings
+*.npz
