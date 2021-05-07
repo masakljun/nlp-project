@@ -255,7 +255,7 @@ For each of the category labels we try to find the $30$ most similar words and u
 %	\label{fig:embedding_words}
 %\end{figure*}
 
-We show the results in Figure~\ref{fig:embedding_labels}. We can see that \textit{homophobic} and \textit{racist} appear very intertwined in Word2Vec and GloVe embeddings, meaning that they cannot be separated, thus indicating a strong relation. On the other hand, in both of these embeddings \textit{spam}, \textit{toxic}, and \textit{discredit} are well separated from other groups and are clearly distinguishable from others. We can also see that \textit{abusive} is entangled with \textit{benevolent} in GloVe representation, however, in results obtained from Word2Vec  \textit{benevolent} is nicely separable from other labels. So it is difficult to conclude that \textit{benevolent} is a label that is different enough from other labels. FastText also nicely separates \textit{toxic} and \textit{benevolent} from other labels, but is unable to separate \textit{vulgar}, \textit{profane} and \textit{obscene}, and \textit{insult}. From all three models combined, we can conclude that the only label that can be always well distinguished from the others is \textit{toxic}, and that \textit{vulgar}, \textit{profane}, \textit{obscene}, and \textit{insult} are labels that cannot be nicely separated. From all three models we can also see that \textit{discredit} and \textit{insult} are slightly intertwined, indicating some sort of weaker relationship. We also conclude that \textit{spam} is a nicely separable category. Note that in some models we omit labels that are not in a vocabulary.
+We show the results in Figure~\ref{fig:embedding_labels}. We can see that \textit{homophobic} and \textit{racist} appear very intertwined in Word2Vec and GloVe embeddings, meaning that they cannot be separated, thus indicating a strong relation. On the other hand, in both of these embeddings \textit{spam}, \textit{toxic}, and \textit{discredit} are well separated from other groups and are clearly distinguishable from others. We can also see that \textit{abusive} is entangled with \textit{benevolent} in GloVe representation, however, in results obtained from Word2Vec  \textit{benevolent} is nicely separable from other labels. So it is difficult to conclude that \textit{benevolent} is a label that is different enough from other labels. FastText also nicely separates \textit{toxic} and \textit{benevolent} from other labels, but is unable to separate \textit{vulgar}, \textit{profane} and \textit{obscene}, and \textit{insult}. From all three models combined, we can conclude that the only label that can be always well distinguished from the others is \textit{toxic}, and that \textit{vulgar}, \textit{profane}, \textit{obscene}, and \textit{insult} are labels that cannot be nicely separated. We also conclude that \textit{spam} is a nicely separable category. Note that in some models we omit labels that are not in a vocabulary.
 
 
 \begin{figure}[!t]
@@ -366,6 +366,22 @@ toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuck
 
 %\subsection{Universal Sentence Encoder}
 %\textcolor{blue}{In the last submission we will also include the findings and results of USE that are already present in our repository.}
+
+ \section*{Analysis}
+Considering all the results and findings from above, we can now provide the following inference. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
+\begin{enumerate}
+  \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur} 
+  \item \textit{obscene}, \textit{insult}, \textit{discredit}
+  \item \textit{vulgar}, \textit{profane}
+  \item \textit{hate speech}
+  \item \textit{benevolent}
+  \item \textit{toxic}
+  \item \textit{spam}
+  \item \textit{cyberbullying}
+  \item \textit{threat}, \textit{hostile}, \textit{offensive}
+\end{enumerate}
+Note: the above list includes 17 out of 21 subgroups that we analyse. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. \textcolor{red}{identity?}
+
 
 \section*{Discussion}
 
