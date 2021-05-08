@@ -109,6 +109,8 @@ This paper is organized as follows: we present the datasets of tweets and commen
 \section{Data}
 \label{sec:data}
 
+
+\subsection{Datasets and label distribution}
 We use $7$ publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{waseem2016hateful}, and \cite{jha2017does} into one large dataset (referred to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{waseem2016hateful}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
 The fourth dataset (referred to as Dataset AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
 hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$ tweets with the mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
@@ -204,25 +206,28 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 \end{figure}
 
 
-\subsection*{Label annotations of our data}
+\subsection{Annotation process of the data}
 As the goal of this report is to inspect deeper structure and gain a new understanding of relationships between different subgroups of hate speech, we must also inspect how the data, that we work with, was annotated. Annotations play a big role in this analysis, as we take them as a ground truth, meaning if in the data set some tweet / comment was labeled as e.g., \textit{sexism} we do not further question this choice, and perform all our further analysis accordingly.
 
 Data set \cite{waseem2016you} uses both amateur annotators from crowdsourcing platform CrowdFlower and annotators with theoretical and applied knowledge of hate speech, and use the data set for hate speech detection and classification. \cite{jha2017does} manually annotate their data set with the help of a 25 year old woman studying gender studies and use the data to investigate how different is benevolent sexism from sexism, and also perform classification with SVM. \cite{founta2018large} again use amateur annotators from CrowdFlower and want to provide large annotated data set that is available for further scientific exploration. \cite{bretschneider2016detecting} use 3 human experts for the annotation and then propose an approach to precisely detect cyberbullies and also provide metrics to identify victims of severe cyberbullying cases. \cite{mandl2019overview} used junior experts for language and they engaged with an online system to judge the tweets. Their goal was text classification. \cite{dixon2017ex} again use platform CrowdFlower, however, they require their annotators to first pass a test of 10 questions to ensure data quality. Their goal is to provide methodology that will allow them explore some of the open questions about the nature of online personal attacks.
 
-\subsection{Data preprocessing}
+\subsection{Preprocessing}
 Before applying any methods we first preprocess all of our data. We remove retweet text RT, hyperlinks, hashtags, taggings, new lines, and zero length tweets. We further filter out tokens that do not contain letters, e.g., raw punctuation.
 
 % --------------------------------------------------------------------------------------------------------------------------------
 \section{Methodology}
 \label{sec:metho}
+
+\subsection{Traditional approaches}
 We start the analysis with more traditional approaches, and continue with neural approaches.
 
 % --------------------------------------------------------------
-\subsection*{LDA}
+
+\subsubsection{LDA}
 We use Latent Dirchilet Allocation (LDA) in combination with Bag-of-Words (BoW) and TF--IDF in hopes of finding obvious topics from all the provided comments / tweets. We try to determine 15 different topics, which is the same as the number of labels we have in our datasets. Results using BoW and TF--IDF are similar, however, we cannot clearly distinguish between the topics and connect obtained topics to the existing labels, aside from one topic, which is related to sexism. Top 5 most related words are: \textit{penis, rape, image, live, vagina}.
 
 % --------------------------------------------------------------
-\subsection*{TF-IDF}
+\subsubsection{TF-IDF}
 We continue with the analysis of datasets with a traditional method TF--IDF as we want to see the most relevant words for each category of offensive language that we have in the dataset. We show the results in Table \ref{tab:tf-idf}. We can see that some of the categories have similar unigrams that achieved the highest TF--IDF score. An example of categories with the same highest scored unigrams are \textit{insult} and \textit{obscene}. This makes it harder to differentiate between the categories. It is important to note, that such examples might also occur due to subjective labeling in the provided datasets, as well as people not clearly differentiating between these categories. Most datasets are not labeled by experts, but with the help of platforms such as FigureEight or Amazon Mechanical Turk. From the results in Table \ref{tab:tf-idf}, we could assume that most people perceive categories such as \textit{insult} and \textit{obscene} or \textit{threat} and \textit{toxic} similarly. On the other hand, categories such as \textit{spam} or \textit{cyberbullying} are clearly differentiable from other categories. We can also see a lot of categories including Trump related words (\textit{hatespeech, profane}, and \textit{offensive}). Those categories are taken from the same dataset, and we can see that such labels will contain words that are related. So the words connected to those labels might also be connected to some bigger topic, which depends on the annotator's choice from where to extract the tweets / comments.
 
 \begin{table}[htb]
@@ -250,8 +255,9 @@ toxic       & fuck, get, bitch, want, block             \\ \bottomrule
 \caption{Table shows 5 highest scoring unigrams for each label we investigate. We choose the parameters, which we believe provide us the most meaningful unigrams, so we consider words that appear in at least $5\%$ and less than $60\%$ of the documents.}
 \label{tab:tf-idf}
 \end{table}
+
 % --------------------------------------------------------------
-\subsection*{Non-contextual word embeddings}
+\subsection{Non-contextual word embeddings}
 For each of the category labels we try to find the $30$ most similar words and use their embeddings to infer the similarities and differences between the subgroups. For this task we use pre-fitted Word2Vec (\cite{mikolov2013efficient}, \cite{mikolov2013distributed}), GloVe \cite{pennington2014glove}, and FastText (\cite{bojanowski2016enriching}). We visualize the results with the help of t-SNE. Because of this we cannot interpret distances between the labels from the visualization. However, we can still infer that the labels that are intertwined are more similar than those that are nicely separable from one another. %We show the results in \ref{fig:embedding_words}. From both plots we can see that words (and its neighbors) like bitch, ass, nigga, shit, fuck, idiot, stupid, and docuhebag are relatively closely together. This could indicate a relation between \textit{abusive, hateful, insult, obscene, identity hate}, and \textit{toxic}. We can also see that classy, nasty, sassy, feminazi, and sexist are closely related - sometimes some words are more related in Word2Vec than in Glove and vice versa. From this we can see a relation between \textit{sexism} and \textit{benevolent sexism}, which is expected as they are correlated. Relationships between certain words can also vastly differ in Word2Vec and Glove. For example giveaway and game are relatively close in Word2Vec, but are further apart in Glove. Similarly, terror and white (both common unigrams of \textit{racism} label) are far away in Word2Vec, but close in Glove. However, terror stands out from other words in both embeddings, which might indicate that racism is at least in some way different to other labels. Similarly, words from \textit{spam} are usually more separated from words of other labels, also indicating another more clearly distinguishable group. Trump is relatively close to a lot of words in Word2Vec - women, world, peopl, sexist, die, little, guy. This could imply that general \textit{hatespeech} and \textit{hateful} are connected to \textit{sexism, identity hate, threat} and also \textit{cyberbullying}. 
 
 %\begin{figure*}[htb]\centering
@@ -297,8 +303,8 @@ From the top 30 similar words for each label, we compute an average vector and w
 From these two clustering results we can infer that \textit{insult} and \textit{obscene} are two similar subgroups of hate speech as they both appear in the same cluster in+ $k$-means clustering and we can see that they are closely together in hierarchical clustering. They are also very similar according to the results from TF--IDF as seen before. \textit{Benevolent sexism} is also close. We can see that \textit{cyberbullying} and \textit{spam} are clustered together in both clusterings and that \textit{threat} and \textit{toxic} are also very similar. From the results of hierarchical clustering we can see that \textit{offensive} is also close to them.
 
 \begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{hier.png}
-	\caption{\textbf{Hierarchical clustering of average Word2Vec embeddings of labels' 30 nearest words.}}
+	\includegraphics[width=0.6\linewidth]{hier.png}
+	\caption{\textbf{Hierarchical clustering of average Word2Vec embeddings of labels' $30$ nearest words.} Figure shows results of hierarchical clustering of the labels from data sets. Distance between two labels is computed as $1 - simcos$, where $simcos$ is a cosine similarity between two labels. Embedding for each label is computed as an average of embeddings of label's nearest $30$ words.}
 	\label{fig:hier}
 \end{figure}
 
@@ -328,17 +334,23 @@ We try to apply this same approach to the words with highest TF--IDF scores from
 	\caption{\textbf{BERT embeddings.} T-SNE visualization of BERT embeddings of labels.}
 	\label{fig:berttsne}
 \end{figure}
-\subsection*{Contextual word embeddings}
-We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base cased model \cite{dbpl} and convert tweets and comments from our dataset to BERT embeddings. We first append them \texttt{ - This is <label>} and compute the embeddings. From obtained embeddings of each vector, we compute an average representation from the vectors that belong to the tokens of the label. We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see high similarities between most of the subgroups of hate speech. The one that differs the most from the other groups is \textit{cyberbullying}. We can also see that \textit{profane} is slightly less similar to \textit{identity}, \textit{insult}, \textit{threat}, and \textit{toxic}, however, the similarity score is still between $0.87$ and $0.89$. For all other combinations the similarity score is $\ge 0.90$. We also visualize the embeddings with the help of t-SNE in Figure \ref{fig:berttsne} and we show the labels on the mean points of each subgroup. We can see that all subgroups are tightly connected and it is hard to distinguish between them. However, we can see that \textit{cyberbullying} is a little bit more compact and not as dispersed as others, which might be a reason behind slightly different similarity scores. It is also interesting that some labels, although being dispersed, have some small clusters which stand out and might indicate special subgroups within those subgroups of hate speech. Example of such subgroup is \textit{benevolent sexism}.
+
+% ------------------------- contextual -------------------------------------
+\subsection{Contextual word embeddings}
+
+% --------------------------------------------------------------
+\subsubsection{BERT}
+We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base cased model \cite{dbpl} and convert tweets and comments from our dataset to BERT embeddings. We first append them "\texttt{ - This is <label>}" and compute the embeddings. From obtained embeddings of each vector, we compute an average representation from the vectors that belong to the tokens of the \texttt{label}. We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see high similarities between most of the subgroups of hate speech. The one that differs the most from the other groups is \textit{cyberbullying}. We can also see that \textit{profane} is slightly less similar to \textit{identity}, \textit{insult}, \textit{threat}, and \textit{toxic}, however, the similarity score is still between $0.87$ and $0.89$. For all other combinations the similarity score is $\ge 0.90$. We also visualize the embeddings with the help of t-SNE in Figure \ref{fig:berttsne} and we show the labels on the mean points of each subgroup. We can see that all subgroups are tightly connected and it is hard to distinguish between them. However, we can see that \textit{cyberbullying} is a little bit more compact and not as dispersed as others, which might be a reason behind slightly different similarity scores. It is also interesting that some labels, although being dispersed, have some small clusters which stand out and might indicate special subgroups within those subgroups of hate speech. Example of such subgroup is \textit{benevolent sexism}.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\linewidth]{bert_sim1.png}
-	\caption{\textbf{Cosine similarities between average representations of label embeddings from BERT.} }
+	\caption{\textbf{Similarities between BERT embeddings.} Figure shows similarity between labels' BERT embeddings. For each label we obtain an average vector representation by averaging embeddings obtained from label's tweets / comments. Similarity is  then computed as a cosine similarity between those vector representations.}
 	\label{fig:bertsim1}
 \end{figure}
 
+\subsubsection{KeyBERT}
+We leverage the KeyBERT \cite{grootendorst2020keybert}, which is a minimal keywords extraction technique that uses BERT embeddings to create keywords and keyphrases that are most similar to a document. For each label we compute top $3$ keywords for each tweet / comment using KeyBERT, and show the labels' $5$ most common keywords in Table \ref{tab:bertkey}. We can see that \textit{insult}, \textit{obscene}, and \textit{toxic} have the same $5$ most common keywords. Since they come from the same data set, and since each tweet from that data set could have multiple labels, we feel that this affected the results. We can see that quite a few labels include common keywords such as fuck, bitch, fucking, and idiot, which is not surprising, as they are among the top common curses. We can see more Trump related words in \textit{offensive}, \textit{profane}, \textit{hate speech}, which is probably again due to the background of data set generation. However, the most common keyword sets of those labels still slightly differ. Keywords are the most diverse between \textit{benevolent}, \textit{cyberbullying}, \textit{racism}, \textit{sexism}, and \textit{spam}.
 
-Using sentence transformers \cite{reimers-2019-sentence-bert} we obtain embeddings for each tweet / comment without the \texttt{This is <label>} appendix. For each label we try to find the keywords that describe subgroups of hate speech the most. We do this by first embedding the tweets / comments using BERT and separately embedding the sub-phrases from documents. For each document we then try to find the most similar sub-phrases with the help of embeddings and cosine similarity. For each label we provide three of the most common keywords obtained from the documents. We show the keywords in Table \ref{tab:bertkey}.
 
 \begin{table}[]
 \scriptsize
@@ -347,22 +359,21 @@ Using sentence transformers \cite{reimers-2019-sentence-bert} we obtain embeddin
 \toprule
 \textbf{category} & \textbf{BERT keywords}                                                                                                                                \\ 
 \midrule
-racism            & \begin{tabular}[c]{@{}l@{}}racistreading, terroristreligion, terroristnationpakistan, \\ faithlessfaggotboy, racisttrying\end{tabular}                \\ \hline
-sexism            & \begin{tabular}[c]{@{}l@{}}godlesswomen, sexlifeless, bitchmattythewhite,\\  onlyallwomen, bitchesvagina\end{tabular}                                 \\ \hline
-benevolent        & \begin{tabular}[c]{@{}l@{}}sexyolderwomen, girlsbeautiful, bitchmattythewhite,\\  womenattractmenattracted, happywomenday\end{tabular}                \\ \hline
-abusive*          & \begin{tabular}[c]{@{}l@{}}misogynistic, hatemyowngender, hatefultrump,\\  selfishmotherfuckers, faithlessfaggotboy\end{tabular}                      \\ \hline
-hateful*          & \begin{tabular}[c]{@{}l@{}}misogynistic, hatemyowngender, selfishmotherfuckers, \\ terroristhasreligion, faithlessfaggotboy\end{tabular}              \\ \hline
-spam              & \begin{tabular}[c]{@{}l@{}}100million, enjoyed, enjoying, \\ fridaymotiovation, saturdaynightonline\end{tabular}                                      \\ \hline
-cyberbullying*    & \begin{tabular}[c]{@{}l@{}}whoremonger, selfishmotherfuckers, faithlessfaggotboy, \\ bitchmattythewhite, boycottfoxnews\end{tabular}                  \\ \hline
-hatespeech*       & \begin{tabular}[c]{@{}l@{}}doctors\_against\_assualt, trumpobstructedjustice, \\ trumpfascism, terroristnationpakistan, doctorsfightback\end{tabular} \\ \hline
-identity hate     & \begin{tabular}[c]{@{}l@{}}whoremonger, gaywad, nazisnotwelcome, \\ racisttrying, racistreading\end{tabular}                                          \\ \hline
-insult*           & \begin{tabular}[c]{@{}l@{}}whoremonger, selfishmotherfuckers, boycottfoxnews, \\ killyourself, cocksuckerfuck\end{tabular}                            \\ \hline
-obscene*          & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, whoremonger, killyourself, \\ selfishmotherfuckers, cocksuckerfuck\end{tabular}                            \\ \hline
-offensive*        & \begin{tabular}[c]{@{}l@{}}trumpobstructedjustice, trumpfascism, \\ selfishmotherfuckers, murdermystery, terroristhasreligion\end{tabular}            \\ \hline
-profane*          & \begin{tabular}[c]{@{}l@{}}trumpfascism, trumpobstructedjustice, faithlessfaggotboy, \\ selfishmotherfuckers, doctors\_against\_assualt\end{tabular}  \\ \hline
-threat            & \begin{tabular}[c]{@{}l@{}}killyourself, murdering, whoremonger, \\ hatemongers, murdermystery\end{tabular}                                           \\ \hline
-toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuckers, killyourself, \\ whoremonger, nazisnotwelcome\end{tabular}   
-
+racism            & \begin{tabular}[c]{@{}l@{}}coon, white, black, terror, fuck\end{tabular}                \\ \hline
+sexism            & \begin{tabular}[c]{@{}l@{}}sexist, women, feminazi, girls, kat\end{tabular}                                 \\ \hline
+benevolent        & \begin{tabular}[c]{@{}l@{}}women, womensday, sassy, \\adaywithoutwomen, woman\end{tabular}                \\ \hline
+abusive          & \begin{tabular}[c]{@{}l@{}}fucking, idiot, bitch, hate, fuck\end{tabular}                      \\ \hline
+hateful          & \begin{tabular}[c]{@{}l@{}}hate, trump, idiot, nigga, fucking\end{tabular}              \\ \hline
+spam              & \begin{tabular}[c]{@{}l@{}}video, new, 2017, liked, free\end{tabular}                                      \\ \hline
+cyberbullying    & \begin{tabular}[c]{@{}l@{}}riot, troll, hacking, trolls, hacker\end{tabular}                  \\ \hline
+hate speech       & \begin{tabular}[c]{@{}l@{}}trumpisatraitor, doctorsfightback, shameonicc, \\borisjohnsonshouldnotbepm, trump\end{tabular} \\ \hline
+identity hate     & \begin{tabular}[c]{@{}l@{}}gay, fuck, nigger, bitch, fucking\end{tabular}                                          \\ \hline
+insult           & \begin{tabular}[c]{@{}l@{}}fuck, wikipedia, bitch, fucking, suck\end{tabular}                            \\ \hline
+obscene          & \begin{tabular}[c]{@{}l@{}}fuck, wikipedia, bitch, fucking, suck\end{tabular}                            \\ \hline
+offensive        & \begin{tabular}[c]{@{}l@{}}trumpisatraitor, fucktrump, trump, murderer, rapist\end{tabular}            \\ \hline
+profane          & \begin{tabular}[c]{@{}l@{}}fucktrump, fuck, dickhead, trump, douchebag\end{tabular}  \\ \hline
+threat            & \begin{tabular}[c]{@{}l@{}}kill, die, fuck, bitch, rape, death\end{tabular}                                           \\ \hline
+toxic            & \begin{tabular}[c]{@{}l@{}}fuck, wikipedia, bitch, fucking, suck\end{tabular}   
 \\
 \bottomrule                       
 \end{tabular}
@@ -370,10 +381,23 @@ toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuck
 \label{tab:bertkey}
 \end{table}
 
+\subsubsection{Universal Sentence Encoder}
+We additionally use one approach that was not suggested and that is Universal Sentence Encoder (USE) which is a model that can be nicely used for semantic similarity. As we are interested in the relations and connections between subgroups of hate speech, we try to use this model to further analyze the structure of hate speech in general.
+
+We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:use_sim}
+
+From the plot we can see that similarly to BERT results, the subgroups here are again very similar. However, we can find some subgroups, that are still a little bit less similar. One example is \textit{hateful} that is less similar to other groups, and the most similar to \textit{spam} and \textit{abusive}. Consequently, \textit{abusive} is more similar to \textit{hateful} and \textit{spam} and a little bit less similar to others. Same holds for \textit{spam}, which is more similar to  \textit{hateful} and \textit{abusive} than to others. From this we can infer that  \textit{hateful}, \textit{abusive}, and \textit{spam} are $3$ subgroups of hate speech that are tightly connected to each other, and less connected to all other subgroups. \textcolor{blue}{To bi dal ven?: Now we can improve our inference of islands of hate speech from above and we can conclude that island 7 that includes only \textit{spam} also includes \textit{abusive} and \textit{hateful}.}
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{use_sim.png}
+	\caption{\textbf{Similarities between USE embeddings.} Figure shows similarity between labels' USE embeddings. For each label we obtain an average vector representation by averaging embeddings obtained from label's tweets / comments. Similarity is  then computed as a cosine similarity between those vector representations.}
+	\label{fig:use_sim}
+\end{figure}
 
 
- \section*{Analysis}
-Considering all the results and findings from above, we can now provide the following inference. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
+% -------------------------------------------------------------------------------
+\section*{Analysis}
+Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider the results that separated our subcategories of hate speech. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
 \begin{enumerate}
   \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur} 
   \item \textit{obscene}, \textit{insult}, \textit{discredit}
@@ -388,18 +412,6 @@ Considering all the results and findings from above, we can now provide the foll
 Note: the above list includes 17 out of 21 subgroups that we analyse. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. \textcolor{red}{identity?}.
 
 
-\subsection{Universal Sentence Encoder}
-We additionally use one approach that was not suggested and that is Universal Sentence Encoder (USE) which is a model that can be nicely used for semantic similarity. As we are interested in the relations and connections between subgroups of hate speech, we try to use this model to further analyze the structure of hate speech in general.
-
-We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:use_sim}
-
-From the plot we can see that similarly to BERT results, the subgroups here are again very much similar. However, we can find some subgroups, that are still a little bit less similar. One example of such is \textit{hateful} that is less similar to other groups, and the most similar to \textit{spam} and \textit{abusive}. Consequently, \textit{abusive} is more similar to \textit{hateful} and \textit{spam} and a little bit less similar to others. Same holds for \textit{spam}, which is more similar to  \textit{hateful} and \textit{abusive} than to others. From this we can infer that  \textit{hateful}, \textit{abusive}, and  \textit{spam} are 3 subgroups of hate speech that are tightly connected to each other, and less connected to all other subgroups. Now we can improve our inference of islands of hate speech from above and we can conclude that island 7 that includes only \textit{spam} also includes \textit{abusive} and \textit{hateful}.
-
-\begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{use_sim.png}
-	\caption{\textbf{Cosine similarities between average representations of label embeddings from USE.} }
-	\label{fig:use_sim}
-\end{figure}
 
 
 \section*{Discussion}
