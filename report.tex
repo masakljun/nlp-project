@@ -109,7 +109,7 @@ This paper is organized as follows: we present the datasets of tweets and commen
 \section{Data}
 \label{sec:data}
 
-We use $7$ publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{rizoiu2019transfer}, and \cite{jha2017does} into one large dataset (referred to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{rizoiu2019transfer}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
+We use $7$ publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{waseem2016hateful}, and \cite{jha2017does} into one large dataset (referred to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{waseem2016hateful}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
 The fourth dataset (referred to as Dataset AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
 hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$ tweets with the mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
 We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze. We also provide an example for each label.
@@ -202,6 +202,12 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 	\caption{\textbf{Distribution of tweets in TOITI}. We see that most of the comments are labeled as \textit{toxic}. Around half of them are \textit{obscene} and around half are also labeled as \textit{insult}. \textit{Identity hate} and \textit{threat} are far more uncommon in this dataset.}
 	\label{fig:distribution_wiki_dataset}
 \end{figure}
+
+
+\subsection*{Label annotations of our data}
+As the goal of this report is to inspect deeper structure and gain a new understanding of relationships between different subgroups of hate speech, we must also inspect how the data, that we work with, was annotated. Annotations play a big role in this analysis, as we take them as a ground truth, meaning if in the data set some tweet / comment was labeled as e.g., \textit{sexism} we do not further question this choice, and perform all our further analysis accordingly.
+
+Data set \cite{waseem2016you} uses both amateur annotators from crowdsourcing platform CrowdFlower and annotators with theoretical and applied knowledge of hate speech, and use the data set for hate speech detection and classification. \cite{jha2017does} manually annotate their data set with the help of a 25 year old woman studying gender studies and use the data to investigate how different is benevolent sexism from sexism, and also perform classification with SVM. \cite{founta2018large} again use amateur annotators from CrowdFlower and want to provide large annotated data set that is available for further scientific exploration. \cite{bretschneider2016detecting} use 3 human experts for the annotation. \cite{mandl2019overview} used junior experts for language and they engaged with an online system to judge the tweets. \cite{dixon2017ex} again use platform CrowdFlower, however, they require their annotators to first pass a test of 10 questions to ensure data quality.
 
 \subsection{Data preprocessing}
 Before applying any methods we first preprocess all of our data. We remove retweet text RT, hyperlinks, hashtags, taggings, new lines, and zero length tweets. We further filter out tokens that do not contain letters, e.g., raw punctuation.
@@ -327,7 +333,7 @@ We move on to contextual embeddings and we focus on BERT. We use the pretrained 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\linewidth]{bert_sim1.png}
-	\caption{\textbf{Cosine similarities between average representations of label embeddings.} }
+	\caption{\textbf{Cosine similarities between average representations of label embeddings from BERT.} }
 	\label{fig:bertsim1}
 \end{figure}
 
@@ -364,8 +370,7 @@ toxic*            & \begin{tabular}[c]{@{}l@{}}boycottfoxnews, selfishmotherfuck
 \label{tab:bertkey}
 \end{table}
 
-%\subsection{Universal Sentence Encoder}
-%\textcolor{blue}{In the last submission we will also include the findings and results of USE that are already present in our repository.}
+
 
  \section*{Analysis}
 Considering all the results and findings from above, we can now provide the following inference. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
@@ -380,7 +385,21 @@ Considering all the results and findings from above, we can now provide the foll
   \item \textit{cyberbullying}
   \item \textit{threat}, \textit{hostile}, \textit{offensive}
 \end{enumerate}
-Note: the above list includes 17 out of 21 subgroups that we analyse. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. \textcolor{red}{identity?}
+Note: the above list includes 17 out of 21 subgroups that we analyse. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. \textcolor{red}{identity?}.
+
+
+\subsection{Universal Sentence Encoder}
+We additionally use one approach that was not suggested and that is Universal Sentence Encoder (USE) which is a model that can be nicely used for semantic similarity. As we are interested in the relations and connections between subgroups of hate speech, we try to use this model to further analyze the structure of hate speech in general.
+
+We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:use_sim}
+
+From the plot we can see that similarly to BERT results, the subgroups here are again very much similar. However, we can find some subgroups, that are still a little bit less similar. One example of such is \textit{hateful} that is less similar to other groups, and the most similar to \textit{spam} and \textit{abusive}. Consequently, \textit{abusive} is more similar to \textit{hateful} and \textit{spam} and a little bit less similar to others. Same holds for \textit{spam}, which is more similar to  \textit{hateful} and \textit{abusive} than to others. From this we can infer that  \textit{hateful}, \textit{abusive}, and  \textit{spam} are 3 subgroups of hate speech that are tightly connected to each other, and less connected to all other subgroups. Now we can improve our inference of islands of hate speech from above and we can conclude that island 7 that includes only \textit{spam} also includes \textit{abusive} and \textit{hateful}.
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{use_sim.png}
+	\caption{\textbf{Cosine similarities between average representations of label embeddings from USE.} }
+	\label{fig:use_sim}
+\end{figure}
 
 
 \section*{Discussion}
