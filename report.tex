@@ -318,6 +318,8 @@ Looking at $k$-means clustering of Word2Vec and GloVe embeddings we see that pai
 We try to apply this same approach to the words with highest TF--IDF scores from each subgroup, however, the obtained clusters provide no useful understanding, so we omit those results.
 
 \begin{table}[htb]
+\scriptsize
+\centering
 \begin{tabular}{c|l}
 \toprule
 \textbf{cluster} & \textbf{components}                                                                                                                                        \\ \midrule
@@ -346,7 +348,7 @@ We try to apply this same approach to the words with highest TF--IDF scores from
 We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base cased model \cite{dbpl} and convert tweets and comments from our dataset to BERT embeddings. We first append them "\texttt{ - This is <label>}" and compute the embeddings. From obtained embeddings of each vector, we compute an average representation from the vectors that belong to the tokens of the \texttt{label}. We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see high similarities between most of the subgroups of hate speech. The one that differs the most from the other groups is \textit{cyberbullying}. We can also see that \textit{profane} is slightly less similar to \textit{identity}, \textit{insult}, \textit{threat}, and \textit{toxic}, however, the similarity score is still between $0.87$ and $0.89$. For all other combinations the similarity score is $\ge 0.90$. We also visualize the embeddings with the help of t-SNE in Figure \ref{fig:berttsne} and we show the labels on the mean points of each subgroup. We can see that all subgroups are tightly connected and it is hard to distinguish between them. However, we can see that \textit{cyberbullying} is a little bit more compact and not as dispersed as others, which might be a reason behind slightly different similarity scores. It is also interesting that some labels, although being dispersed, have some small clusters which stand out and might indicate special subgroups within those subgroups of hate speech. Example of such subgroup is \textit{benevolent sexism}.
 
 \begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{bert_sim1.png}
+	\includegraphics[width=0.9\linewidth]{bert_sim1.png}
 	\caption{\textbf{Similarities between BERT embeddings.} Figure shows similarity between labels' BERT embeddings. For each label we obtain an average vector representation by averaging embeddings obtained from label's tweets / comments. Similarity is  then computed as a cosine similarity between those vector representations.}
 	\label{fig:bertsim1}
 \end{figure}
@@ -389,10 +391,9 @@ We additionally use one approach that was not suggested and that is Universal Se
 
 We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:use_sim}
 
-From the plot we can see that similarly to BERT results, the subgroups here are again very similar. However, we can find some subgroups, that are still a little bit less similar. One example is \textit{hateful} that is less similar to other groups, and the most similar to \textit{spam} and \textit{abusive}. Consequently, \textit{abusive} is more similar to \textit{hateful} and \textit{spam} and a little bit less similar to others. Same holds for \textit{spam}, which is more similar to  \textit{hateful} and \textit{abusive} than to others. From this we can infer that  \textit{hateful}, \textit{abusive}, and \textit{spam} are $3$ subgroups of hate speech that are tightly connected to each other, and less connected to all other subgroups. \textcolor{blue}{To bi dal ven?: Now we can improve our inference of islands of hate speech from above and we can conclude that island 7 that includes only \textit{spam} also includes \textit{abusive} and \textit{hateful}.}
-
+From the plot we can see that similarly to BERT results, the subgroups here are again very similar. However, we can find some subgroups, that are still a little bit less similar. One example is \textit{hateful} that is less similar to other groups, and the most similar to \textit{spam} and \textit{abusive}. Consequently, \textit{abusive} is more similar to \textit{hateful} and \textit{spam} and a little bit less similar to others. Same holds for \textit{spam}, which is more similar to  \textit{hateful} and \textit{abusive} than to others. From this we can infer that  \textit{hateful}, \textit{abusive}, and \textit{spam} are $3$ subgroups of hate speech that are tightly connected to each other, and less connected to all other subgroups.
 \begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{use_sim.png}
+	\includegraphics[width=0.9\linewidth]{use_sim.png}
 	\caption{\textbf{Similarities between USE embeddings.} Figure shows similarity between labels' USE embeddings. For each label we obtain an average vector representation by averaging embeddings obtained from label's tweets / comments. Similarity is  then computed as a cosine similarity between those vector representations.}
 	\label{fig:use_sim}
 \end{figure}
@@ -426,24 +427,30 @@ Note: the above list includes 17 out of 21 subgroups that we analyze. The reason
 As we see that some subgroups cannot be separated just yet, we apply further analysis with Word2Vec and GloVe. We focus on labels with their $50$ most similar words, and then use their embeddings to infer whether we can further separate the subgroups. For two of the following figures we use PCA visualization, so that we can also discuss the distance between subgroups. In Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more closely related between each other than to \textit{sexism}. In Figure \ref{fig:further3} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated. In Figure \ref{fig:further2} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, as they are to each other.
 
 \begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{Further analysis - Glove - PCA.png}
-	\caption{\textbf{Further analysis of island 1 - sexism, racism, homophobic, and slur.} Figure shows PCA visualization of 4 GloVe embeddings.}
-	\label{fig:further1}
-\end{figure}
-
-\begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{Further analysis1 Word2Vec - PCA.png}
-	\caption{\textbf{Further analysis of islands 2, 3 and \textit{abusive} - obscene, insult, discredit, vulgar, profane, and abusive.} Figure shows PCA visualization of 6 Word2Vec embeddings.}
+	\includegraphics[width= \linewidth]{final_schema.png}
+	\caption{\textbf{Proposed schema of hate speech.} Figure shows the proposed schema of hate speech. Note that all of the labels are very related, however, we try to provide one possible division. Nodes in groups that are of slightly different color are more separable from other nodes in this group. We show connections to other the nodes with normal lines and connections to whole groups with line and two arrows. Identity is dotted because we do not have enough information to connect it with other node or group.}
 	\label{fig:further3}
 \end{figure}
 
+\begin{figure*}[htb]\centering
+	\includegraphics[width=0.33 \linewidth]{Further analysis - Glove - PCA.png}
+	\includegraphics[width=0.33 \linewidth]{Further analysis1 Word2Vec - PCA.png}
+	\includegraphics[width=0.33 \linewidth]{Further analysis2 - Glove - t-SNE.png}
+	\caption{\textbf{Further analysis of island 1 - sexism, racism, homophobic, and slur.} Figure shows PCA visualization of 4 GloVe embeddings.}
+	\label{fig:further1}
+\end{figure*}
 
+%\begin{figure}[htb]\centering
+%	\includegraphics[width=0.33 \linewidth]{Further analysis1 Word2Vec - PCA.png}
+%	\caption{\textbf{Further analysis of islands 2, 3 and \textit{abusive} - obscene, insult, discredit, vulgar, profane, and abusive.} Figure shows PCA %visualization of 6 Word2Vec embeddings.}
+%	\label{fig:further3}
+%\end{figure}
 
-\begin{figure}[htb]\centering
-	\includegraphics[width=\linewidth]{Further analysis2 - Glove - t-SNE.png}
-	\caption{\textbf{Further analysis of island 2 - obscene, insult, and discredit.} Figure shows t-SNE visualization of 3 GloVe embeddings.}
-	\label{fig:further2}
-\end{figure}
+%\begin{figure}[htb]\centering
+%	\includegraphics[width=0.33 \linewidth]{Further analysis2 - Glove - t-SNE.png}
+%	\caption{\textbf{Further analysis of island 2 - obscene, insult, and discredit.} Figure shows t-SNE visualization of 3 GloVe embeddings.}
+%	\label{fig:further2}
+%\end{figure}
 
 
 
