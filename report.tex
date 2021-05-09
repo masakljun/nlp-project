@@ -25,6 +25,9 @@
 \usepackage{calc}
 \usepackage{booktabs}
 
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+
 
 \newsavebox\mybox
 \newenvironment{aquote}[1]
@@ -275,7 +278,7 @@ We show the results in Figure~\ref{fig:embedding_labels}. We can see that \texti
 	\includegraphics[width=\linewidth]{SimilarWords - word2vec - t-SNE_1.png}
 	\includegraphics[width=\linewidth]{SimilarWords - Glove - t-SNE_1.png}
 	\includegraphics[width=\linewidth]{SimilarWords - FastText - t-SNE_1.png}
-	\caption{\textbf{Word2Vec, Glove, and FastText similar labels.} Figure shows Word2Vec (1st row), Glove (2nd row), and FastText (3rd row) embeddings of neighboring words of labels we analyze. Note that we omit hate speech subgroups that are not in the vocabulary.}
+	\caption{\textbf{Word2Vec, GloVe, and FastText similar labels.} Figure shows Word2Vec (1st row), GloVe (2nd row), and FastText (3rd row) embeddings of neighboring words of labels we analyze. Note that we omit hate speech subgroups that are not in the vocabulary.}
 	\label{fig:embedding_labels}
 \end{figure}
 
@@ -286,7 +289,7 @@ animal : cat = our_label : x 	(hyponyms)
 son : father = our_label : x 	(hypernyms)
 cat : animal = our_label : x 	(hypernyms)
 \end{verbatim},
-where \texttt{our\_label} is one of the analyzed labels and \texttt{x} is the word found by Word2Vec or Glove. 
+where \texttt{our\_label} is one of the analyzed labels and \texttt{x} is the word found by Word2Vec or GloVe. 
 
 Unfortunately, the relationships are not clear and uniquely defined. An example is \textit{racism} is to \textit{sexism} what is \texttt{son} to \texttt{father} with $\approx 64.6\%$ probability, but \textit{sexism} is to \textit{racism} what is \texttt{son} to \texttt{father} with $\approx 64.8\%$ probability. We can once again see that the two labels are related, but the precise relationship cannot be inferred. Using \texttt{brother} and \texttt{sister} the probability is lower. This could indicate that it is impossible to find a specific hypernym and that we can only conclude that the labels are more closely related to each other, as they are each in some way hypernym and hyponym of each other. Similarly, \textit{racism} and \textit{sexism} are connected to \textit{homophobia} and \textit{slur}. Another group that we find, but also cannot clearly define the inner relations contains \textit{vulgar}, \textit{profane}, and \textit{obscene}.
 
@@ -308,7 +311,7 @@ From these two clustering results we can infer that \textit{insult} and \textit{
 	\label{fig:hier}
 \end{figure}
 
-Comparing the hierarchical clustering results of Glove and FastText embeddings to Word2Vec embeddings, we can see that we always get almost the same two main clusters as those in Figure \ref{fig:hier}, so we do not show figures with those results. 
+Comparing the hierarchical clustering results of GloVe and FastText embeddings to Word2Vec embeddings, we can see that we always get almost the same two main clusters as those in Figure \ref{fig:hier}, so we do not show figures with those results. 
 
 Looking at $k$-means clustering of Word2Vec and GloVe embeddings we see that pairs of \textit{abusive}, \textit{vulgar}, \textit{racist}, \textit{homophobic}, \textit{profane}, \textit{slur}, \textit{obscene}, \textit{hateful} and \textit{insult}, and \textit{discredit} and \textit{hostile} always appear in the same two clusters, so we can conclude that they are related. We do not include the results of FastText $k$-means clustering, as its silhouette score is $\le 0.30$ for all possible $k$, whereas in the first two, the score is often $> 0.30$. 
 
@@ -398,18 +401,51 @@ From the plot we can see that similarly to BERT results, the subgroups here are 
 % -------------------------------------------------------------------------------
 \section*{Analysis}
 Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider the results that separated our subcategories of hate speech. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
+
 \begin{enumerate}
-  \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur} 
+  \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur}
+\vspace{-10pt} 
   \item \textit{obscene}, \textit{insult}, \textit{discredit}
+\vspace{-10pt}
   \item \textit{vulgar}, \textit{profane}
+\vspace{-10pt}
   \item \textit{hate speech}
+\vspace{-10pt}
   \item \textit{benevolent}
+\vspace{-10pt}
   \item \textit{toxic}
+\vspace{-10pt}
   \item \textit{spam}
+\vspace{-10pt}
   \item \textit{cyberbullying}
+\vspace{-10pt}
   \item \textit{threat}, \textit{hostile}, \textit{offensive}
 \end{enumerate}
-Note: the above list includes 17 out of 21 subgroups that we analyse. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. \textcolor{red}{identity?}.
+Note: the above list includes 17 out of 21 subgroups that we analyze. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. 
+
+As we see that some subgroups cannot be separated just yet, we apply further analysis with Word2Vec and GloVe. We focus on labels with their $50$ most similar words, and then use their embeddings to infer whether we can further separate the subgroups. For two of the following figures we use PCA visualization, so that we can also discuss the distance between subgroups. In Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more closely related between each other than to \textit{sexism}. In Figure \ref{fig:further3} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated. In Figure \ref{fig:further2} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, as they are to each other.
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{Further analysis - Glove - PCA.png}
+	\caption{\textbf{Further analysis of island 1 - sexism, racism, homophobic, and slur.} Figure shows PCA visualization of 4 GloVe embeddings.}
+	\label{fig:further1}
+\end{figure}
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{Further analysis1 Word2Vec - PCA.png}
+	\caption{\textbf{Further analysis of islands 2, 3 and \textit{abusive} - obscene, insult, discredit, vulgar, profane, and abusive.} Figure shows PCA visualization of 6 Word2Vec embeddings.}
+	\label{fig:further3}
+\end{figure}
+
+
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\linewidth]{Further analysis2 - Glove - t-SNE.png}
+	\caption{\textbf{Further analysis of island 2 - obscene, insult, and discredit.} Figure shows t-SNE visualization of 3 GloVe embeddings.}
+	\label{fig:further2}
+\end{figure}
+
+
 
 
 
