@@ -63,10 +63,10 @@ boxrule=0pt,bottomrule=0.6pt,toprule=0.6pt,width=5cm}
 \Authors{Maša Kljun, Matija Teršek}
 
 % Advisors
-\affiliation{\textit{Advisors: Slavko Žitnik}}
+\affiliation{\textit{Advisors: Assist. Prof. dr. Slavko Žitnik}}
 
 % Keywords
-\Keywords{Hate speech, natural language processing, traditional methods, contextual and non-contextual embeddings, exploratory analysis, ...}
+\Keywords{Offensive language, hate speech, natural language processing, traditional methods, contextual and non-contextual embeddings, exploratory analysis, ...}
 \newcommand{\keywordname}{Keywords}
 
 
@@ -75,8 +75,7 @@ boxrule=0pt,bottomrule=0.6pt,toprule=0.6pt,width=5cm}
 %----------------------------------------------------------------------------------------
 
 \Abstract{
-In this paper we focus on the exploratory analysis of 21 different subgroups of hate speech. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums. First we use classic approaches, such as TF--IDF, BoW, and LDA, then we move on to more sophisticated methods, such as embeddings. We use both non-contextual embeddings, such as Word2Vec and GloVe, and contextual embeddings, such as BERT. We find out that \textcolor{blue}{TODO: Describe the findings for the last submission}.
-}
+In this paper we focus on the exploratory analysis of 21 different subgroups of offensive language. We use natural language processing techniques in order to find the underlying structure and connections/relations between the subgroups. We focus on data extracted from Twitter and online forums from 7 different data sets. First, we use classic approaches, such as TF–IDF, BoW, and LDA, then we move on to more sophisticated embeddings. We use both, non-contextual embeddings, such as Word2Vec, GloVe, and FastText, and contextual embeddings, such as BERT, KeyBERT, and USE. We find out that all subgroups are tightly connected in the sense of contextual embeddings. Considering all results, we provide a possible ontology of offensive language.}
 
 %----------------------------------------------------------------------------------------
 
@@ -95,29 +94,28 @@ In this paper we focus on the exploratory analysis of 21 different subgroups of 
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-\section*{Introduction}
-In the last few years social media grew exponentially and with it also the ability of people to express themselves online. Enabling people to write on different online platforms without even identifying themselves lead to a new era of freedom of speech. Despite this new medium for communication bringing many positive things, it also has its downside. Social media has become a place where heated discussions happen and often result in insults and hatred. It is an important task to recognize hate speech and to prevent it.
+\section{Introduction}
+In the last few years social media grew exponentially and with it also the ability of people to express themselves online. Enabling people to write on different online platforms without even identifying themselves lead to a new era of freedom of speech. Despite this new medium for communication bringing many positive things, it also has its downside. Social media has become a place where heated discussions happen and often result in insults and hatred. It is an important task to recognize hate speech and offensive language, and to prevent it.
 
-Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation}\cite{hate_speech}. We can see that the definition is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification. In this paper we focus on 21 subgroups of hate speech - \textit{abusive, hateful, spam, general hate speech, profane, offensive, cyberbullying, racism, sexism, vulgar, homophobic, slur, harassment, obscene, threat, discredit, insult, hostile, toxic, identity hate} and \textit{benevolent sexism}. The goal of this paper is to explore hate speech subgroups and understand the similarities and connections between them. 
+Hate speech is defined as \textit{abusive or threatening speech or writing that expresses prejudice against a particular group, especially on the basis of race, religion, or sexual orientation}\cite{hate_speech}. We can see that the definition is very vague. Having said that, the goal of our paper is to help distinguish different types of hate speech and find the specific keywords of its subgroups in order to explain its structure. This could help with its identification and classification. In this paper we focus on 21 subgroups of offensive language - \textit{abusive, hateful, spam, general hate speech, profane, offensive, cyberbullying, racism, sexism, vulgar, homophobic, slur, harassment, obscene, threat, discredit, insult, hostile, toxic, identity hate} and \textit{benevolent sexism}. The goal of this paper is to explore offensive language subgroups and understand the similarities and connections between them. 
 
-There has been done a lot of research regarding the hate speech, however, these works are usually focused on the classification of hate speech. One of the first works include \cite{spertus1997smokey} who built the decision tree based classifier Smokey for abusive message recognition and classification. Some other works that focus mainly on classification include \cite{waseem2016you} who compare the classification accuracy of models trained on expert and amateur annotations, \cite{gamback2017using} who use convolutional neural networks for classification into four predefined categories, and \cite{martins2018hate} who use different natural language processing techniques for expanding datasets with emotional information for better classification. In the last years, especially deep learning models are often used for detection and classification of hate speech, such as \cite{rizoiu2019transfer} who propose a sophisticated method that is a combination of a deep neural network architecture with transfer learning.
-There is a also a lot of related work that focuses on creating large datasets such as \cite{chung2019conan} who create a large-scale, multilingual, expert based dataset of hate speech. 
+There has been done a lot of research regarding the offensive language, however, these works are usually focused on the classification. One of the first works include \cite{spertus1997smokey} who built the decision tree based classifier Smokey for abusive message recognition and classification. Some other works that focus mainly on classification include \cite{waseem2016you}, who compare the classification accuracy of models trained on expert and amateur annotations, \cite{gamback2017using} use convolutional neural networks for classification into four predefined categories, and \cite{martins2018hate} use different natural language processing techniques for expanding data sets with emotional information for better classification. In the last years, especially deep learning models are often used for detection and classification of hate speech, such as \cite{rizoiu2019transfer}, who propose a sophisticated method that is a combination of a deep neural network architecture with transfer learning.
+There is also a lot of related work that focuses on creating large data sets, such as \cite{chung2019conan}, who create a large-scale, multilingual, expert based data set of hate speech. 
 
-What is less common in the research area of hate speech is analysis of relationships between different types of hate speech and the importance of specific keywords. Some examples include \cite{xu2012learning}, who try to separate bullying from other social media posts and try to discover topic of bullying using topic modeling with Latent Dirichlet Allocation (LDA). \cite{calderon2020topic} model hate speech against immigrants on Twitter in Spain. They try to find underlying topic of hate speech using LDA, discovering features of different dimensions of hate speech, including foul language, humiliation, irony, etc. \cite{schmidt2017survey} conduct a survey about hate speech detection and describe key areas that have been explored, regarding the topic modeling, as well as sentiment analysis.
+What is less common in the research area of offensive language is analysis of relationships between different types of offensive language and the importance of specific keywords. Some examples include \cite{xu2012learning}, who try to separate bullying from other social media posts and try to discover topic of bullying using topic modeling with Latent Dirichlet Allocation (LDA). \cite{calderon2020topic} model hate speech against immigrants on Twitter in Spain. They try to find underlying topic of hate speech using LDA, discovering features of different dimensions of hate speech, including foul language, humiliation, irony, etc. \cite{schmidt2017survey} conduct a survey about hate speech detection and describe key areas that have been explored, regarding the topic modeling, as well as sentiment analysis.
 
-This paper is organized as follows: we present the datasets of tweets and comments, and describe data preprocessing in Section \ref{sec:data}, we perform the exploratory analysis by using many traditional and neural approaches in Section \ref{sec:metho}, and we show the final results and a scheme of hate speech in \textcolor{blue}{TODO: Complete this in the last submission}.
-
+We organize this paper as follows: we present the data sets and describe data preprocessing in Section \ref{sec:data}, we perform the exploratory analysis by using many traditional and neural approaches in Section \ref{sec:metho}, and provide a possible offensive language ontology in Section \ref{sec:schema}.
 % --------------------------------------------------------------------------------------------------------------------------------
 
 \section{Data}
 \label{sec:data}
 
 
-\subsection{Datasets and label distribution}
-We use $7$ publicly available datasets for our exploratory analysis. We combine datasets \cite{waseem2016you}, \cite{waseem2016hateful}, and \cite{jha2017does} into one large dataset (referred to as Dataset SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{waseem2016hateful}. The third dataset (\cite{jha2017does}) that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two datasets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a dataset with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
-The fourth dataset (referred to as Dataset AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
-hateful, spam}. As this is the original dataset no additional merging is needed. We obtain a dataset with $13776$ tweets with the mentioned labels. Note that we exclude \textit{None} label from both datasets, as we do not need it for the analysis.
-We show the distribution of individual categories from datasets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze. We also provide an example for each label.
+\subsection{Data sets and label distribution}
+We use $7$ publicly available data sets for our exploratory analysis. We combine data sets \cite{waseem2016you}, \cite{waseem2016hateful}, and \cite{jha2017does} into one large data set (referred to as SRB) as they include same categories of hate speech. We make labels \textit{sexism}, \textit{racism}, and \textit{both} from \cite{waseem2016you} and \cite{waseem2016hateful}. The third data set \cite{jha2017does} that we use contains label \textit{hostile sexism}, where marked tweets are already included in the first two data sets under \textit{sexism}, and label \textit{benevolent sexism}, which we rename to \textit{benevolent}. We obtain a data set with $6069$ samples that are labeled either $sexism$, $racism$, $both$, or $benevolent$.
+The fourth data set (referred to as AHS)\cite{founta2018large} that we use has $3$ categories - \textit{abusive,
+hateful, spam}. As this is the original data set, no additional merging is needed. We obtain a data set with $13776$ tweets with the mentioned labels. Note that we exclude \textit{None} label from both data sets, as we do not need it for the analysis.
+We show the distribution of individual categories from data sets SRB and AHS in Figures \ref{fig:distribution_tweets_dataset1} and \ref{fig:distribution_tweets_dataset2}, respectively. Note that the numbers of samples might not match the numbers in the original papers, due to the Twitter removing the tweets, making them unavailable for us to analyze. We also provide an example for each label.
 
 \begin{tcolorbox}[colback=black!8,width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Racism}} - "He can't be a server at our restaurant, that beard makes him look like a terrorist." Everyone laughs. \#fuckthanksgiving
@@ -145,17 +143,17 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_dataset1.png}
-	\caption{\textbf{Distribution of tweets in SRB dataset.} This figure shows the distribution of hate speech categories in the SRB dataset. We can see that \textit{sexism} and \textit{benevolent} are well represented, whereas \textit{racism} and \textit{both} are far less frequent. Original set contains more tweets labeled \textit{racism}, but due to their removal we cannot obtain them.}
+	\caption{\textbf{Distribution of tweets in SRB data set.} This figure shows the distribution of hate speech categories in the SRB data set. We can see that \textit{sexism} and \textit{benevolent} are well represented, whereas \textit{racism} and \textit{both} are far less frequent. Original set contains more tweets labeled \textit{racism}, but due to their removal we cannot obtain them.}
 	\label{fig:distribution_tweets_dataset1}
 \end{figure}
 
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_dataset2.png}
-	\caption{\textbf{Distribution of tweets in AHS dataset.} We see that the \textit{spam} is the most represented label in the dataset, which represents the majority of the dataset. This is followed by the \textit{abusive} tweets and there is the least \textit{hateful} tweets. We can see that categories in this dataset are well represented.}
+	\caption{\textbf{Distribution of tweets in AHS data set.} We see that the \textit{spam} is the most represented label in the data set, which represents the majority of the data set. This is followed by the \textit{abusive} tweets and there is the least of \textit{hateful} tweets. We can see that categories in this data set are well represented.}
 	\label{fig:distribution_tweets_dataset2}
 \end{figure}
 
-\noindent Additionally, we use the dataset of comments extracted from the League of Legends community \cite{bretschneider2016detecting}. We preprocess the dataset given in the SQL format to a more readable CSV form and keep only the posts that are annotated as harassment. We obtain $259$ examples of cyberbullying examples. The sixth dataset that we use was designed for the problem of the hate speech identification and classification, but we use the labels from the train and test set and merge them into one big dataset that we use for our analysis. It provides tags of \textit{hatespeech, profane}, and \textit{offensive}, so we refer to the dataset as HPO. It consists of 2549 tweets, distribution of which can be seen in Figure \ref{fig:distribution_tweets_hpo}. We again provide an example for each of the labels.
+\noindent Additionally, we use the data set of comments extracted from the League of Legends community \cite{bretschneider2016detecting}. We preprocess the data set given in the SQL format to a more readable CSV form and keep only the posts that are annotated as harassment. We obtain $259$ examples of cyberbullying. The sixth data set that we use was designed for the problem of the hate speech identification and classification, but we use the labels from the train and test set and merge them into one big data set that we use for our analysis. It provides tags of \textit{hatespeech, profane}, and \textit{offensive}, so we refer to the data set as HPO. It consists of 2549 tweets, distribution of which can be seen in Figure \ref{fig:distribution_tweets_hpo}. We again provide an example for each of the labels.
 
 \begin{tcolorbox}[colback=black!8, width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Cyberbullying}} - plot twist she's a fggt
@@ -175,11 +173,11 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 
 \begin{figure}[ht]\centering
 	\includegraphics[width=\linewidth]{distribution_tweets_hpo.png}
-	\caption{\textbf{Distribution of tweets in HPO dataset.} The most used label is \textit{hatespeech}. It is followed by \textit{profane} and then \textit{offensive}, which have a similar number of tweets.}
+	\caption{\textbf{Distribution of tweets in HPO data set.} The most used label is \textit{hatespeech}. It is followed by \textit{profane} and then \textit{offensive}, which have a similar number of tweets.}
 	\label{fig:distribution_tweets_hpo}
 \end{figure}
 
-\noindent We also use the dataset of Wikipedia comments \cite{dixon2017ex}, that are marked as either \textit{toxic}, \textit{sever toxic}, \textit{obscene}, \textit{identity hate}, \textit{threat}, and \textit{insult}. We merge the first two categories into \textit{toxic}. It is important to note that each comment in this dataset might have multiple labels, so the results for those tags might be similar. Original dataset contains $159571$ tweets, $16225$ of which are labeled. We show the distribution of the labels in Figure \ref{fig:distribution_wiki_dataset}. We denote this dataset as TOITI in the future text.
+\noindent We also use the data set of Wikipedia comments \cite{dixon2017ex} that are marked as either \textit{toxic}, \textit{severe toxic}, \textit{obscene}, \textit{identity hate}, \textit{threat}, and \textit{insult}. We merge the first two categories into \textit{toxic}. It is important to note that each comment in this data set might have multiple labels, so the results for those tags might be similar. Original data set contains $159571$ tweets, $16225$ of which are labeled. We show the distribution of the labels in Figure \ref{fig:distribution_wiki_dataset}. We denote this data set as TOITI in the future text.
 
 \begin{tcolorbox}[width=0.9\linewidth, center,arc=8pt,sharp corners=downhill, boxrule=0.3pt, left=\bm, top=\bm, right=\bm, bottom=\bm, fontupper=\small]
 \labelbox{\textit{Threat}} - SHUT UP, YOU FAT POOP, OR I WILL KICK YOUR ASS!!!
@@ -204,7 +202,7 @@ We show the distribution of individual categories from datasets SRB and AHS in F
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{distribution_wiki_dataset.png}
-	\caption{\textbf{Distribution of tweets in TOITI}. We see that most of the comments are labeled as \textit{toxic}. Around half of them are \textit{obscene} and around half are also labeled as \textit{insult}. \textit{Identity hate} and \textit{threat} are far more uncommon in this dataset.}
+	\caption{\textbf{Distribution of tweets in TOITI}. We see that most of the comments are labeled as \textit{toxic}. Around half of them are \textit{obscene} and around half are also labeled as \textit{insult}. \textit{Identity hate} and \textit{threat} are far less common in this data set.}
 	\label{fig:distribution_wiki_dataset}
 \end{figure}
 
@@ -227,11 +225,11 @@ We start the analysis with more traditional approaches, and continue with neural
 % --------------------------------------------------------------
 
 \subsubsection{LDA}
-We use Latent Dirchilet Allocation (LDA) in combination with Bag-of-Words (BoW) and TF--IDF in hopes of finding obvious topics from all the provided comments / tweets. We try to determine 15 different topics, which is the same as the number of labels we have in our datasets. Results using BoW and TF--IDF are similar, however, we cannot clearly distinguish between the topics and connect obtained topics to the existing labels, aside from one topic, which is related to sexism. Top 5 most related words are: \textit{penis, rape, image, live, vagina}.
+We use Latent Dirchilet Allocation (LDA) in combination with Bag-of-Words (BoW) and TF--IDF in hopes of finding obvious topics from all the provided comments / tweets. We try to determine 15 different topics, which is the same as the number of labels we have in our data sets. Results using BoW and TF--IDF are similar, however, we cannot clearly distinguish between the topics and connect obtained topics to the existing labels, aside from one topic, which is related to sexism. Top 5 most related words are: \textit{penis, rape, image, live, vagina}.
 
 % --------------------------------------------------------------
 \subsubsection{TF-IDF}
-We continue with the analysis of datasets with a traditional method TF--IDF as we want to see the most relevant words for each category of offensive language that we have in the dataset. We show the results in Table \ref{tab:tf-idf}. We can see that some of the categories have similar unigrams that achieved the highest TF--IDF score. An example of categories with the same highest scored unigrams are \textit{insult} and \textit{obscene}. This makes it harder to differentiate between the categories. It is important to note, that such examples might also occur due to subjective labeling in the provided datasets, as well as people not clearly differentiating between these categories. Most datasets are not labeled by experts, but with the help of platforms such as FigureEight or Amazon Mechanical Turk. From the results in Table \ref{tab:tf-idf}, we could assume that most people perceive categories such as \textit{insult} and \textit{obscene} or \textit{threat} and \textit{toxic} similarly. On the other hand, categories such as \textit{spam} or \textit{cyberbullying} are clearly differentiable from other categories. We can also see a lot of categories including Trump related words (\textit{hatespeech, profane}, and \textit{offensive}). Those categories are taken from the same dataset, and we can see that such labels will contain words that are related. So the words connected to those labels might also be connected to some bigger topic, which depends on the annotator's choice from where to extract the tweets / comments.
+We continue with the analysis of data sets with a traditional method TF--IDF as we want to see the most relevant words for each category of offensive language that we have in the data set. We show the results in Table \ref{tab:tf-idf}. We can see that some of the categories have similar unigrams that achieved the highest TF--IDF score. An example of categories with the same highest scored unigrams are \textit{insult} and \textit{obscene}. This makes it harder to differentiate between the categories. It is important to note, that such examples might also occur due to subjective labeling in the provided data sets, as well as people not clearly differentiating between these categories. Most data sets are not labeled by experts, but with the help of platforms such as FigureEight or Amazon Mechanical Turk. From the results in Table \ref{tab:tf-idf}, we could assume that most people perceive categories such as \textit{insult} and \textit{obscene} or \textit{threat} and \textit{toxic} similarly. On the other hand, categories such as \textit{spam} or \textit{cyberbullying} are clearly differentiable from other categories. We can also see a lot of categories including Trump related words (\textit{hatespeech, profane}, and \textit{offensive}). Those categories are taken from the same data set, and we can see that such labels will contain words that are related. So the words connected to those labels might also be connected to some bigger topic, which depends on the annotator's choice from where to extract the tweets / comments.
 
 \begin{table}[htb]
 \scriptsize
@@ -345,7 +343,7 @@ We try to apply this same approach to the words with highest TF--IDF scores from
 
 % --------------------------------------------------------------
 \subsubsection{BERT}
-We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base cased model \cite{dbpl} and convert tweets and comments from our dataset to BERT embeddings. We first append them "\texttt{ - This is <label>}" and compute the embeddings. From obtained embeddings of each vector, we compute an average representation from the vectors that belong to the tokens of the \texttt{label}. We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see high similarities between most of the subgroups of hate speech. The one that differs the most from the other groups is \textit{cyberbullying}. We can also see that \textit{profane} is slightly less similar to \textit{identity}, \textit{insult}, \textit{threat}, and \textit{toxic}, however, the similarity score is still between $0.87$ and $0.89$. For all other combinations the similarity score is $\ge 0.90$. We also visualize the embeddings with the help of t-SNE in Figure \ref{fig:berttsne} and we show the labels on the mean points of each subgroup. We can see that all subgroups are tightly connected and it is hard to distinguish between them. However, we can see that \textit{cyberbullying} is a little bit more compact and not as dispersed as others, which might be a reason behind slightly different similarity scores. It is also interesting that some labels, although being dispersed, have some small clusters which stand out and might indicate special subgroups within those subgroups of hate speech. Example of such subgroup is \textit{benevolent sexism}.
+We move on to contextual embeddings and we focus on BERT. We use the pretrained BERT base cased model \cite{dbpl} and convert tweets and comments from our data set to BERT embeddings. We first append them "\texttt{ - This is <label>}" and compute the embeddings. From obtained embeddings of each vector, we compute an average representation from the vectors that belong to the tokens of the \texttt{label}. We average the obtained representation of each label and use cosine similarity to compute the similarity between those label representations. We show the obtained similarity matrix in Figure \ref{fig:bertsim1}. We can see high similarities between most of the subgroups of hate speech. The one that differs the most from the other groups is \textit{cyberbullying}. We can also see that \textit{profane} is slightly less similar to \textit{identity}, \textit{insult}, \textit{threat}, and \textit{toxic}, however, the similarity score is still between $0.87$ and $0.89$. For all other combinations the similarity score is $\ge 0.90$. We also visualize the embeddings with the help of t-SNE in Figure \ref{fig:berttsne} and we show the labels on the mean points of each subgroup. We can see that all subgroups are tightly connected and it is hard to distinguish between them. However, we can see that \textit{cyberbullying} is a little bit more compact and not as dispersed as others, which might be a reason behind slightly different similarity scores. It is also interesting that some labels, although being dispersed, have some small clusters which stand out and might indicate special subgroups within those subgroups of hate speech. Example of such subgroup is \textit{benevolent sexism}.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=0.9\linewidth]{bert_sim1.png}
@@ -400,45 +398,41 @@ From the plot we can see that similarly to BERT results, the subgroups here are 
 
 
 % -------------------------------------------------------------------------------
-\section*{Analysis}
-Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider the results that separated our subcategories of hate speech. We can define the following "islands", which means that the subgroups in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
+\section{Schema}
+\label{sec:schema}
+Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider more the results that separated our subcategories of hate speech. We can define the following "blocks", that contain the subgroups of hate speech in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
 
 \begin{enumerate}
-  \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur}
+  \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur};
 \vspace{-10pt} 
-  \item \textit{obscene}, \textit{insult}, \textit{discredit}
+  \item \textit{obscene}, \textit{insult}, \textit{profane}, \textit{abusive}, \textit{vulgar};
 \vspace{-10pt}
-  \item \textit{vulgar}, \textit{profane}
+  \item \textit{discredit, offensive, hostile, threat, benevolent};
 \vspace{-10pt}
-  \item \textit{hate speech}
+  \item \textit{spam};
 \vspace{-10pt}
-  \item \textit{benevolent}
-\vspace{-10pt}
-  \item \textit{toxic}
-\vspace{-10pt}
-  \item \textit{spam}
-\vspace{-10pt}
-  \item \textit{cyberbullying}
-\vspace{-10pt}
-  \item \textit{threat}, \textit{hostile}, \textit{offensive}
+  \item \textit{cyberbullying}.
 \end{enumerate}
-Note: the above list includes 17 out of 21 subgroups that we analyze. The reason behind is that \textit{abusive} is a subgroup that can be connected with islands 1,2, or 5. Same holds for \textit{hateful}, which is connected to the same islands, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to island 8 is \textit{harassment}. 
 
-As we see that some subgroups cannot be separated just yet, we apply further analysis with Word2Vec and GloVe. We focus on labels with their $50$ most similar words, and then use their embeddings to infer whether we can further separate the subgroups. For two of the following figures we use PCA visualization, so that we can also discuss the distance between subgroups. In Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more closely related between each other than to \textit{sexism}. In Figure \ref{fig:further3} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated. In Figure \ref{fig:further2} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, as they are to each other.
+The above list includes $16$ out of $21$ subgroups that we analyze. The reason behind is that \textit{hate speech} is a subgroup that can be connected with blocks $1$ and $2$. Similar holds for \textit{hateful}, which can be connected to the first $3$ blocks, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to block $1$ is \textit{harassment}. 
 
-\begin{figure}[htb]\centering
-	\includegraphics[width= \linewidth]{final_schema.png}
-	\caption{\textbf{Proposed schema of hate speech.} Figure shows the proposed schema of hate speech. Note that all of the labels are very related, however, we try to provide one possible division. Nodes in groups that are of slightly different color are more separable from other nodes in this group. We show connections to other the nodes with normal lines and connections to whole groups with line and two arrows. Identity is dotted because we do not have enough information to connect it with other node or group.}
-	\label{fig:further3}
-\end{figure}
+As we see that some subgroups cannot be separated just yet (block $1$, $2$, and $3$), we apply further analysis with Word2Vec and GloVe. We focus on the labels and use the embeddings of their $50$ most similar words. For the three of the following figures we use PCA visualization, so that we can also see the distance between subgroups. In the first plot of Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more related to each other than to \textit{sexism}. In the second plot of Figure \ref{fig:further1} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated, \textit{insult}, however, slightly stands out. In the last plot of Figure \ref{fig:further1} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, as they are to each other.
 
 \begin{figure*}[htb]\centering
 	\includegraphics[width=0.33 \linewidth]{Further analysis - Glove - PCA.png}
 	\includegraphics[width=0.33 \linewidth]{Further analysis1 Word2Vec - PCA.png}
-	\includegraphics[width=0.33 \linewidth]{Further analysis2 - Glove - t-SNE.png}
-	\caption{\textbf{Further analysis of island 1 - sexism, racism, homophobic, and slur.} Figure shows PCA visualization of 4 GloVe embeddings.}
+	\includegraphics[width=0.33 \linewidth]{Further analysis2 Word2Vec - PCA.png}
+	\caption{\textbf{Further analysis of blocks that could not be separated.} We use PCA visualization in all plots and $50$ nearest words' embeddings of each label are used. We use GloVe embeddings in the first plot, and Word2Vec in the other two.}
 	\label{fig:further1}
 \end{figure*}
+
+From the above findings, we try and provide a schema of hate speech subcategories in Figure \ref{fig:schema}. Note that the schema is obtained with the described analysis and it is not confirmed by any linguist professional. All of the subgroups are also tightly connected, however, as the goal of our paper is try to provide some meaningful relations, we try to summarize our findings in a schema and show more connected groups together. We found $3$ mains groups, that are shown in bordered rectangles. Difference in colors means, that the node is slightly less connected to other nodes in those groups. \textit{Spam} and \textit{cyberbullying} are both gray, as they are connected, but they each could be put in a separate rectangle, as they differ enough. We place them next to \textit{toxic} as slight relations can be seen between those three. \textit{Toxic} and \textit{benevolent} are also connected to some of the nodes in the blue subgroup. The latter is also connected to \textit{hateful}. We also see that \textit{insult} has a strong relation with the red and green subgroups, and \textit{discredit} from the blue. General \textit{hate speech} is mostly connected to the red and green subgroup. Note that \textit{identity hate} is related to all, but we could not find a stronger relation to any specific subgroup.
+
+\begin{figure}[htb]\centering
+	\includegraphics[width= \linewidth]{final_schema.png}
+	\caption{\textbf{Proposed schema of hate speech.} Figure shows the proposed schema of hate speech. Note that all of the labels are very related, however, we try to provide one possible division. Nodes in groups that are of slightly different color are more separable from other nodes in this group. We show connections to other the nodes with normal lines and connections to whole groups with line and two arrows. Identity is dotted because we do not have enough information to connect it with other node or group.}
+	\label{fig:schema}
+\end{figure}
 
 %\begin{figure}[htb]\centering
 %	\includegraphics[width=0.33 \linewidth]{Further analysis1 Word2Vec - PCA.png}
@@ -454,12 +448,16 @@ As we see that some subgroups cannot be separated just yet, we apply further ana
 
 
 
+\section{Discussion}
+\label{sec:disc}
+Offensive language is known to everybody, as it is very common in the social media. However, we often neglect the fact that is actually a conglomerate of many subgroups, such as sexism, racism, etc. In this paper we wanted to explore offensive language and its structure and we do this by utilizing different natural language processing techniques. 
 
+We used 7 different data sets that contained Twitter and online forum comments. We used traditional techniques, such as TF--IDF, BoW, and LDA and also more advanced approaches such as non-contextual (Word2Vec, GloVe, FastText) and contextual (BERT, keyBERT, USE) embeddings. We found out that each of the approaches provides us with slightly different relations and it is difficult to draw conclusions and we would probably need some help of the linguist professionals. Results also depend on how the comments were obtained and how annotators conceive the meaning of the labels. 
 
+Combining the results from several approaches, we proposed one possible ontology of offensive language.
+We inferred there exist 3 groupings that include 4 subgroups of offensive language each. However, even in those groupings there exist subgroups, that are less connected to others. We also found some subgroups that are more separable from others. However, it is important to note that all the subgroups are still tighty connected.
 
-\section*{Discussion}
-
-\textcolor{blue}{In the last submission we are going to discuss the findings and provide the schema of hate speech.}
+In the future the obtained knowledge could be upgraded with the help of a linguist professional.
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
