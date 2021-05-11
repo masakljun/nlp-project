@@ -401,8 +401,7 @@ From the plot we can see that similarly to BERT results, the subgroups here are 
 % -------------------------------------------------------------------------------
 \section{Schema}
 \label{sec:schema}
-Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider more the results that separated our subcategories of hate speech. We can define the following "blocks", that contain the subgroups of hate speech in one island are connected to each other more than to subgroups from other islands. Those subgroups, that are an island by themselves, are the subgroups that can be nicely separated from all other subgroups. 
-
+Considering all the results and findings from above, we can now provide the following inference. Note that all categories are tightly connected in contextual embeddings, which should be kept in mind. However, we want to provide some sort of separation where possible, so we consider more the results that separated our subcategories of offensive language. We can define the following "blocks":
 \begin{enumerate}
   \item \textit{sexism}, \textit{racism}, \textit{homophobic}, and \textit{slur};
 \vspace{-10pt} 
@@ -410,14 +409,16 @@ Considering all the results and findings from above, we can now provide the foll
 \vspace{-10pt}
   \item \textit{discredit, offensive, hostile, threat, benevolent};
 \vspace{-10pt}
+  \item \textit{toxic};
+\vspace{-10pt}
   \item \textit{spam};
 \vspace{-10pt}
   \item \textit{cyberbullying}.
 \end{enumerate}
 
-The above list includes $16$ out of $21$ subgroups that we analyze. The reason behind is that \textit{hate speech} is a subgroup that can be connected with blocks $1$ and $2$. Similar holds for \textit{hateful}, which can be connected to the first $3$ blocks, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to block $1$ is \textit{harassment}. 
+The above list includes $16$ out of $21$ subgroups that we analyze. The reason behind is that \textit{hate speech} is a subgroup that can be connected with blocks $1$ and $2$. Similar holds for \textit{hateful}, which can be connected to the first three blocks, however, it is never connected to \textit{abusive}. Another subgroup that is sometimes connected to block $1$ is \textit{harassment}. 
 
-As we see that some subgroups cannot be separated just yet (block $1$, $2$, and $3$), we apply further analysis with Word2Vec and GloVe. We focus on the labels and use the embeddings of their $50$ most similar words. For the three of the following figures we use PCA visualization, so that we can also see the distance between subgroups. In the first plot of Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more related to each other than to \textit{sexism}. In the second plot of Figure \ref{fig:further1} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated, \textit{insult}, however, slightly stands out. In the last plot of Figure \ref{fig:further1} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, as they are to each other.
+As we see that some subgroups cannot be separated just yet (block $1$, $2$, and $3$), we apply further analysis with Word2Vec and GloVe. We focus on the labels and use the embeddings of their $50$ most similar words. For the three of the following figures we use PCA visualization, so that we can also see the distance between subgroups. In the first plot of Figure \ref{fig:further1} we see that \textit{racism}, \textit{slur}, and \textit{homophobic} are more related to each other than to \textit{sexism}. In the second plot of Figure \ref{fig:further1} we can see that all of the inspected subgroups are tightly connected and cannot be nicely separated, \textit{insult}, however, slightly stands out. In the last plot of Figure \ref{fig:further1} we can see that \textit{discredit} is not as intertwined with \textit{insult} and \textit{obscene}, so we conclude that although it is related to them, it it still a bit less connected to them, than they are to each other.
 
 \begin{figure*}[htb]\centering
 	\includegraphics[width=0.33 \linewidth]{Further analysis - Glove - PCA.png}
@@ -427,7 +428,7 @@ As we see that some subgroups cannot be separated just yet (block $1$, $2$, and 
 	\label{fig:further1}
 \end{figure*}
 
-From the above findings, we try and provide a schema of hate speech subcategories in Figure \ref{fig:schema}. Note that the schema is obtained with the described analysis and it is not confirmed by any linguist professional. All of the subgroups are also tightly connected, however, as the goal of our paper is try to provide some meaningful relations, we try to summarize our findings in a schema and show more connected groups together. We found $3$ mains groups, that are shown in bordered rectangles. Difference in colors means, that the node is slightly less connected to other nodes in those groups. \textit{Spam} and \textit{cyberbullying} are both gray, as they are connected, but they each could be put in a separate rectangle, as they differ enough. We place them next to \textit{toxic} as slight relations can be seen between those three. \textit{Toxic} and \textit{benevolent} are also connected to some of the nodes in the blue subgroup. The latter is also connected to \textit{hateful}. We also see that \textit{insult} has a strong relation with the red and green subgroups, and \textit{discredit} from the blue. General \textit{hate speech} is mostly connected to the red and green subgroup. Note that \textit{identity hate} is related to all, but we could not find a stronger relation to any specific subgroup.
+From the above findings, we propose a schema of offensive language subcategories in Figure \ref{fig:schema}. Note that the schema is obtained with the described analysis and it is not confirmed by any linguist professional. All of the subgroups are also tightly connected, however, as the goal of our paper is try to provide some meaningful relations, we try to summarize our findings in a schema and show more connected groups together. We find $3$ mains groups, that are shown in bordered rectangles. Difference in colors means that the node is slightly less connected to other nodes in those groups. \textit{Spam} and \textit{cyberbullying} are both gray, as they are connected, but they each could be put in a separate rectangle, as they differ enough. We place them next to \textit{toxic} as slight relations can be seen between those three. \textit{Toxic} and \textit{benevolent} are also connected to some of the nodes in the blue subgroup. The latter is also connected to \textit{hateful}. We also see that \textit{insult} has a strong relation with the red and green subgroups, and \textit{discredit} from the blue. General \textit{hate speech} is mostly connected to the red and green subgroup. Note that \textit{identity hate} is related to all, but we could not find a stronger relation to any specific subgroup.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width= \linewidth]{final_schema.png}
@@ -458,7 +459,7 @@ We used 7 different data sets that contained Twitter and online forum comments. 
 Combining the results from several approaches, we proposed one possible ontology of offensive language.
 We inferred there exist 3 groupings that include 4 subgroups of offensive language each. However, even in those groupings there exist subgroups, that are less connected to others. We also found some subgroups that are more separable from others. However, it is important to note that all the subgroups are still tighty connected.
 
-In the future the obtained knowledge could be upgraded with the help of a linguist professional.
+In the future the obtained knowledge could be upgraded with the help of a linguist professional. We could also use the obtained methodology and apply it to Slovenian data sets.
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
