@@ -16,7 +16,7 @@ If you installed the libraries using Anaconda and *environment.yml*, you need to
 ## Data sets
 Notebooks numbered *01_** to *03_** contain the code for the data set preparation. For you convenience some data sets are already extracted and located in the *code/data* folder. Note that some data sets require the agreement, and some data sets are data sets that require Twitter API key to be able to extract them. Each notebook describes what is required for the successful data extraction from various data sets, so that our work is fully reproducible.
 
-However, as data extraction can be a long and tedious process, we provide you the extracted data, which can be used for running all notebooks from *04_** onward. Note that the data is password protected. You can obtain the password by contacting us at: *mt2421@student.fri.uni-lj.si* or *mk2700@student.uni-lj.si*. The data set is downloadable [HERE](https://drive.google.com/file/d/1T4gL4ftMv9EYCF0cX3hfU9AvlJFhXQ5i/view?usp=sharing).
+However, as data extraction can be a long and tedious process, we provide you the extracted data, which can be used for running all notebooks from *04_** onward. Note that the data is password protected. You can obtain the password by contacting us at: *mt2421@student.uni-lj.si* or *mk2700@student.uni-lj.si*. The data set is downloadable [HERE](https://drive.google.com/file/d/1T4gL4ftMv9EYCF0cX3hfU9AvlJFhXQ5i/view?usp=sharing).
 
 The extracted dataset should be put in *code/dataset* folder and should be named *data.csv*. Note that notebooks *05_*, *06_*, and *10_* do not require the *data.csv* to be run. 
 
