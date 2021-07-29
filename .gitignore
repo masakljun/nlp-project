@@ -9,3 +9,4 @@ code/fastText
 *.gz
 code/embeddings
 *.npz
+code/models
